@@ -15,9 +15,12 @@
 </head>
 <body>
 
-    <!-- CONTENEDOR ANUNCIO SUPERIOR -->
+    <!-- ========================================================
+         CONTENEDOR SUPERIOR (Intercambia HilltopAds por Monetag)
+         ======================================================== -->
     <div class="contenedor-anuncio">
-        <!-- RONDA 1: HILLTOPADS (Segundos 11 al 6) -->
+        
+        <!-- [ANUNCIO 1] RONDA 1 SUPERIOR: HILLTOPADS -->
         <div id="anuncio_sup_ronda1">
             <script type="text/javascript">
                 atOptions = {
@@ -31,15 +34,20 @@
             <script type="text/javascript" src="//://highperformanceformat.com"></script>
         </div>
         
-        <!-- RONDA 2: MONETAG IN-PAGE PUSH (Segundos 5 al 0) -->
+        <!-- [ANUNCIO 3] RONDA 2 SUPERIOR: MONETAG (IN-PAGE PUSH) -->
         <div id="anuncio_sup_ronda2" class="bloque-oculto">
-            <!-- Se inyectará el banner de Monetag dinámicamente aquí -->
+            <!-- El iframe forzado de Monetag se creará aquí en el segundo 5 -->
         </div>
+        
     </div>
 
-    <!-- CONTENEDOR ANUNCIO INFERIOR -->
+
+    <!-- ========================================================
+         CONTENEDOR INFERIOR (Intercambia Adsterra por Relleno)
+         ======================================================== -->
     <div class="contenedor-anuncio">
-        <!-- RONDA 1: ADSTERRA (Segundos 11 al 6) -->
+        
+        <!-- [ANUNCIO 2] RONDA 1 INFERIOR: ADSTERRA -->
         <div id="anuncio_inf_ronda1">
             <script type="text/javascript">
                 atOptions = {
@@ -53,14 +61,16 @@
             <script type="text/javascript" src="//://highperformanceformat.com"></script>
         </div>
         
-        <!-- RONDA 2: RELLENO O ESPACIO PARA ADCASH POSTERIOR (Segundos 5 al 0) -->
+        <!-- [ANUNCIO 4] RONDA 2 INFERIOR: RELLENO O PRÓXIMA RED -->
         <div id="anuncio_inf_ronda2" class="bloque-oculto">
             <p style="color: #666; font-size: 12px;">Cargando contenido premium...</p>
         </div>
+        
     </div>
 
     <!-- BOTÓN DE DESCARGA CON TEMPORIZADOR -->
     <button id="boton_descarga" class="btn-bloqueado" disabled>Espere 11 segundos...</button>
+
 
 <script>
     let segundos = 11;
@@ -76,26 +86,48 @@
         segundos--;
         boton.innerText = `Espere ${segundos} segundos...`;
 
-        // AL SEGUNDO 5: EL INTERCAMBIO ASÍNCRONO
+        // AL SEGUNDO 5: OCURRE LA ROTACIÓN ASÍNCRONA
         if (segundos === 5 && !ronda2Cargada) {
             ronda2Cargada = true;
             
-            // Ocultar Banners de Ronda 1
+            // Ocultamos la Ronda 1 (HilltopAds y Adsterra desaparecen)
             supRonda1.classList.add('bloque-oculto');
             infRonda1.classList.add('bloque-oculto');
             
-            // Mostrar contenedores de Ronda 2
+            // Mostramos los contenedores de la Ronda 2
             supRonda2.classList.remove('bloque-oculto');
             infRonda2.classList.remove('bloque-oculto');
 
-            // INYECTAR EL IN-PAGE PUSH DE MONETAG ADENTRO DEL RECUADRO SUPERIOR EXCLUSIVAMENTE
-            let scriptPush = document.createElement('script');
-            scriptPush.dataset.zone = '11272430';
-            scriptPush.src = 'https://nap5k.com';
-            supRonda2.appendChild(scriptPush);
+            // ========================================================
+            // INYECCIÓN OBLIGATORIA DE MONETAG (ZONA: 11272430)
+            // Creamos un iframe blindado de 300x250 para aislar el script
+            // ========================================================
+            let iframeMonetag = document.createElement('iframe');
+            iframeMonetag.width = "300";
+            iframeMonetag.height = "250";
+            iframeMonetag.style.border = "none";
+            iframeMonetag.style.scrolling = "no";
+            
+            // Metemos el iframe dentro de la caja de la Ronda 2 Superior
+            supRonda2.appendChild(iframeMonetag);
+            
+            // Escribimos el script de Monetag dentro del iframe para obligarlo a medir 300x250
+            let doc = iframeMonetag.contentWindow.document;
+            doc.open();
+            doc.write(`
+                <body style="margin:0; padding:0; background:transparent; display:flex; align-items:center; justify-content:center;">
+                    <script>
+                        (function(s){
+                            s.dataset.zone='11272430';
+                            s.src='https://nap5k.com';
+                        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+                    <\/script>
+                </body>
+            `);
+            doc.close();
         }
 
-        // AL SEGUNDO 0: HABILITAR BOTÓN
+        // AL SEGUNDO 0: EL BOTÓN SE ACTIVA
         if (segundos <= 0) {
             clearInterval(temporizador);
             boton.innerText = "DESCARGAR AHORA";
@@ -104,10 +136,9 @@
         }
     }, 1000);
 
-    // ACCIÓN DEL BOTÓN TOTALMENTE LIMPIA DE VIGNETTE
+    // ACCIÓN DEL BOTÓN TOTALMENTE LIMPIA (SIN VIGNETTE)
     boton.addEventListener('click', () => {
         if (!boton.hasAttribute('disabled')) {
-            // El clic ahora es directo y no genera redirecciones intermedias de Monetag
             window.location.href = "archivo1.zip"; 
         }
     });

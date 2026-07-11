@@ -3,32 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zona de Descargas - Complementos Kodi</title>
+    <title>Descargas Móviles</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; margin: 0; padding: 20px; }
-        .contenedor { max-width: 400px; background: white; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #333; font-size: 20px; }
-        .btn-descarga { display: block; background-color: #28a745; color: white; padding: 12px; margin: 15px 0; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .publicidad { margin: 20px 0; min-height: 250px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #666; font-size: 12px; }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #111; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; }
+        .contenedor-anuncio { width: 300px; height: 250px; background-color: #222; margin: 5px 0; display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden; border: 1px solid #333; }
+        .bloque-oculto { display: none !important; }
+        .btn-bloqueado { display: block; width: 300px; background-color: #555; color: #aaa; padding: 14px 0; margin-top: 15px; border-radius: 5px; font-weight: bold; text-decoration: none; font-size: 16px; cursor: not-allowed; border: none; }
+        .btn-activo { background-color: #28a745 !important; color: white !important; cursor: pointer !important; }
     </style>
 </head>
 <body>
 
-<div class="contenedor">
-    <h1>Descargar Complementos para Kodi</h1>
-    
-    <!-- ESPACIO PARA TU PRIMER BANNER DE ADSTERRA -->
-    <div class="publicidad">
-        <!-- AQUÍ PEGARÁS EL CÓDIGO DE ADSTERRA DE 300x250 MÁS ADELANTE -->
-        [Espacio publicitario Adsterra 300x250]
+    <!-- CONTENEDOR ANUNCIO SUPERIOR -->
+    <div class="contenedor-anuncio">
+        <!-- RONDA 1: ANUNCIO 1 (HILLTOPADS) -->
+        <div id="anuncio_sup_ronda1">
+            <!-- PEGA AQUÍ TU CÓDIGO DE BANNER 1 (HILLTOPADS) -->
+            <p style="color: #666; font-size: 12px;">Banner Superior - Ronda 1</p>
+        </div>
+        <!-- RONDA 2: ANUNCIO 3 (MONETAG) -->
+        <div id="anuncio_sup_ronda2" class="bloque-oculto">
+            <!-- PEGA AQUÍ TU CÓDIGO DE BANNER 3 (MONETAG) -->
+            <p style="color: #666; font-size: 12px;">Banner Superior - Ronda 2</p>
+        </div>
     </div>
 
-    <!-- ENLACES DIRECTOS A TUS ARCHIVOS ZIP -->
-    <a href="archivo1.zip" class="btn-descarga">Descargar Complemento 1 (.zip)</a>
-    <a href="archivo2.zip" class="btn-descarga">Descargar Complemento 2 (.zip)</a>
+    <!-- CONTENEDOR ANUNCIO INFERIOR -->
+    <div class="contenedor-anuncio">
+        <!-- RONDA 1: ANUNCIO 2 (ADSTERRA) -->
+        <div id="anuncio_inf_ronda1">
+            <!-- PEGA AQUÍ TU CÓDIGO DE BANNER 2 (ADSTERRA) -->
+            <p style="color: #666; font-size: 12px;">Banner Inferior - Ronda 1</p>
+        </div>
+        <!-- RONDA 2: ANUNCIO 4 (ADCASH) -->
+        <div id="anuncio_inf_ronda2" class="bloque-oculto">
+            <!-- PEGA AQUÍ TU CÓDIGO DE BANNER 4 (ADCASH) -->
+            <p style="color: #666; font-size: 12px;">Banner Inferior - Ronda 2</p>
+        </div>
+    </div>
+
+    <!-- BOTÓN DE DESCARGA CON TEMPORIZADOR -->
+    <button id="boton_descarga" class="btn-bloqueado" disabled>Espere 11 segundos...</button>
+
+<script>
+    let segundos = 11;
+    const boton = document.getElementById('boton_descarga');
     
-    <p style="font-size: 11px; color: #888;">Asegúrate de tener permitidos los orígenes desconocidos en Kodi.</p>
-</div>
+    const supRonda1 = document.getElementById('anuncio_sup_ronda1');
+    const supRonda2 = document.getElementById('anuncio_sup_ronda2');
+    const infRonda1 = document.getElementById('anuncio_inf_ronda1');
+    const infRonda2 = document.getElementById('anuncio_inf_ronda2');
+
+    const temporizador = setInterval(() => {
+        segundos--;
+        
+        // Actualizar el texto del botón con los segundos restantes
+        boton.innerText = `Espere ${segundos} segundos...`;
+
+        // AL SEGUNDO 6 (Tras 5 segundos completos de exposición de la Ronda 1)
+        if (segundos === 6) {
+            // Ocultar Ronda 1
+            supRonda1.classList.add('bloque-oculto');
+            infRonda1.classList.add('bloque-oculto');
+            
+            // Mostrar Ronda 2 (Inicia la petición a los nuevos servidores publicitarios)
+            supRonda2.classList.remove('bloque-oculto');
+            infRonda2.classList.remove('bloque-oculto');
+        }
+
+        // AL SEGUNDO 0 (El temporizador termina)
+        if (segundos <= 0) {
+            clearInterval(temporizador);
+            
+            // Activar visual y funcionalmente el botón de descarga humana
+            boton.innerText = "DESCARGAR AHORA";
+            boton.classList.add('btn-activo');
+            boton.removeAttribute('disabled');
+        }
+    }, 1000);
+
+    // FUNCIÓN AL HACER CLIC EN EL BOTÓN DESBLOQUEADO
+    boton.addEventListener('click', () => {
+        if (!boton.hasAttribute('disabled')) {
+            
+            // 1. AQUÍ ACTIVAREMOS EL ANUNCIO INTERSTICIAL DE MONETAG MÁS ADELANTE
+            alert("¡Aquí saltará el anuncio Intersticial y luego iniciará la descarga!");
+
+            // 2. Redirección final al archivo que elija el usuario (o a un menú intermedio si deseas)
+            // window.location.href = "archivo1.zip"; 
+        }
+    });
+</script>
 
 </body>
 </html>

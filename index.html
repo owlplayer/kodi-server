@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="83b5dfc7d59a4cb128d44b7bab1621d0a5b0d0e3" content="83b5dfc7d59a4cb128d44b7bab1621d0a5b0d0e3" />
+    <meta name="hilltopads-site-verification" content="83b5dfc7d59a4cb128d4" />
     <title>Descargas Móviles</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background-color: #111; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; }
-        .contenedor-anuncio { width: 300px; height: 250px; background-color: #222; margin: 5px 0; display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden; border: 1px solid #333; }
+        .contenedor-anuncio { width: 300px; height: 250px; background-color: #222; margin: 5px 0; display: flex; align-items: center; justify-content: center; border-radius: 4px; overflow: hidden; border: 1px solid #333; position: relative; }
         .bloque-oculto { display: none !important; }
         .btn-bloqueado { display: block; width: 300px; background-color: #555; color: #aaa; padding: 14px 0; margin-top: 15px; border-radius: 5px; font-weight: bold; text-decoration: none; font-size: 16px; cursor: not-allowed; border: none; }
         .btn-activo { background-color: #28a745 !important; color: white !important; cursor: pointer !important; }
@@ -17,52 +17,45 @@
 
     <!-- CONTENEDOR ANUNCIO SUPERIOR -->
     <div class="contenedor-anuncio">
-        <!-- RONDA 1: ANUNCIO 1 (HILLTOPADS) -->
+        <!-- RONDA 1: HILLTOPADS (Segundos 11 al 6) -->
         <div id="anuncio_sup_ronda1">
-            <script>
-(function(clpqu){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = clpqu || {};
-s.src = "\/\/conventionalresponse.com\/bSXoVXs.dLG\/lw0jYWWUcH\/ceMm\/9_ujZTUdlGkTPQTjc\/yYMZTYQO1\/NuzncHtfN\/zoI_xoN\/DZUt4\/M_QJ";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
-            <p style="color: #666; font-size: 12px;">Banner Superior - Ronda 1</p>
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'f3dbdfc7d59a4cb128d4b3b5dfc7d59a',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//://highperformanceformat.com"></script>
         </div>
-        <!-- RONDA 2: ANUNCIO 3 (MONETAG) -->
+        
+        <!-- RONDA 2: MONETAG IN-PAGE PUSH (Segundos 5 al 0) -->
         <div id="anuncio_sup_ronda2" class="bloque-oculto">
-            <!-- PEGA AQUÍ TU CÓDIGO DE BANNER 3 (MONETAG) -->
-            <script>(function(s){s.dataset.zone='11272442',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-            <!-- PEGA AQUÍ TU CÓDIGO DE BANNER 3 (MONETAG) -->
-            <p style="color: #666; font-size: 12px;">Banner Superior - Ronda 2</p>
+            <!-- Se inyectará el banner de Monetag dinámicamente aquí -->
         </div>
     </div>
 
     <!-- CONTENEDOR ANUNCIO INFERIOR -->
     <div class="contenedor-anuncio">
-        <!-- RONDA 1: ANUNCIO 2 (ADSTERRA) -->
+        <!-- RONDA 1: ADSTERRA (Segundos 11 al 6) -->
         <div id="anuncio_inf_ronda1">
-            <script>
-  atOptions = {
-    'key' : '5a9a95855c3eee1eddafaafd625faa2e',
-    'format' : 'iframe',
-    'height' : 250,
-    'width' : 300,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/5a9a95855c3eee1eddafaafd625faa2e/invoke.js"></script>
-
-            <p style="color: #666; font-size: 12px;">Banner Inferior - Ronda 1</p>
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'de43b5dfc7d59a4cb128d4f3b5dfc7d59a',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//://highperformanceformat.com"></script>
         </div>
-        <!-- RONDA 2: ANUNCIO 4 (ADCASH) -->
+        
+        <!-- RONDA 2: RELLENO O ESPACIO PARA ADCASH POSTERIOR (Segundos 5 al 0) -->
         <div id="anuncio_inf_ronda2" class="bloque-oculto">
-            <!-- PEGA AQUÍ TU CÓDIGO DE BANNER 4 (ADCASH) -->
-            <p style="color: #666; font-size: 12px;">Banner Inferior - Ronda 2</p>
+            <p style="color: #666; font-size: 12px;">Cargando contenido premium...</p>
         </div>
     </div>
 
@@ -71,6 +64,7 @@ l.parentNode.insertBefore(s, l);
 
 <script>
     let segundos = 11;
+    let ronda2Cargada = false;
     const boton = document.getElementById('boton_descarga');
     
     const supRonda1 = document.getElementById('anuncio_sup_ronda1');
@@ -80,41 +74,41 @@ l.parentNode.insertBefore(s, l);
 
     const temporizador = setInterval(() => {
         segundos--;
-        
-        // Actualizar el texto del botón con los segundos restantes
         boton.innerText = `Espere ${segundos} segundos...`;
 
-        // AL SEGUNDO 6 (Tras 5 segundos completos de exposición de la Ronda 1)
-        if (segundos === 6) {
-            // Ocultar Ronda 1
+        // AL SEGUNDO 5: EL INTERCAMBIO ASÍNCRONO
+        if (segundos === 5 && !ronda2Cargada) {
+            ronda2Cargada = true;
+            
+            // Ocultar Banners de Ronda 1
             supRonda1.classList.add('bloque-oculto');
             infRonda1.classList.add('bloque-oculto');
             
-            // Mostrar Ronda 2 (Inicia la petición a los nuevos servidores publicitarios)
+            // Mostrar contenedores de Ronda 2
             supRonda2.classList.remove('bloque-oculto');
             infRonda2.classList.remove('bloque-oculto');
+
+            // INYECTAR EL IN-PAGE PUSH DE MONETAG ADENTRO DEL RECUADRO SUPERIOR EXCLUSIVAMENTE
+            let scriptPush = document.createElement('script');
+            scriptPush.dataset.zone = '11272430';
+            scriptPush.src = 'https://nap5k.com';
+            supRonda2.appendChild(scriptPush);
         }
 
-        // AL SEGUNDO 0 (El temporizador termina)
+        // AL SEGUNDO 0: HABILITAR BOTÓN
         if (segundos <= 0) {
             clearInterval(temporizador);
-            
-            // Activar visual y funcionalmente el botón de descarga humana
             boton.innerText = "DESCARGAR AHORA";
             boton.classList.add('btn-activo');
             boton.removeAttribute('disabled');
         }
     }, 1000);
 
-    // FUNCIÓN AL HACER CLIC EN EL BOTÓN DESBLOQUEADO
+    // ACCIÓN DEL BOTÓN TOTALMENTE LIMPIA DE VIGNETTE
     boton.addEventListener('click', () => {
         if (!boton.hasAttribute('disabled')) {
-            
-            // 1. AQUÍ ACTIVAREMOS EL ANUNCIO INTERSTICIAL DE MONETAG MÁS ADELANTE
-            alert("¡Aquí saltará el anuncio Intersticial y luego iniciará la descarga!");
-
-            // 2. Redirección final al archivo que elija el usuario (o a un menú intermedio si deseas)
-            // window.location.href = "archivo1.zip"; 
+            // El clic ahora es directo y no genera redirecciones intermedias de Monetag
+            window.location.href = "archivo1.zip"; 
         }
     });
 </script>

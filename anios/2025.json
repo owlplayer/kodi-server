@@ -1,0 +1,9 @@
+{
+  "anio": "2025",
+  "total": 3,
+  "peliculas": [
+    {"id": "capitan-america-un-nuevo-mundo-2025", "titulo": "Capitán América: Brave New World"},
+    {"id": "depredador-tierras-salvajes-2025", "titulo": "Predator: Badlands"},
+    {"id": "los-4-fantasticos-primeros-pasos-2025", "titulo": "Los Cuatro Fantásticos: Primeros pasos"}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "genero": "Crimen",
+  "total": 4,
+  "peliculas": [
+    {"id": "atrapame-si-puedes-2002", "titulo": "Atrápame si puedes", "anio": "2002"},
+    {"id": "peaky-blinders-el-hombre-inmortal-2026", "titulo": "Peaky Blinders: El hombre inmortal", "anio": "2026"},
+    {"id": "tropa-de-elite-2007", "titulo": "Tropa de élite", "anio": "2007"},
+    {"id": "un-mundo-perfecto-1993", "titulo": "Un mundo perfecto", "anio": "1993"}
+  ]
+}

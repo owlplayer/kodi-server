@@ -1,0 +1,9 @@
+{
+  "genero": "Aventura",
+  "total": 3,
+  "peliculas": [
+    {"id": "mortal-kombat-ii", "titulo": "Mortal Kombat II", "anio": "2026"},
+    {"id": "depredador-tierras-salvajes-2025", "titulo": "Predator: Badlands", "anio": "2025"},
+    {"id": "los-4-fantasticos-primeros-pasos-2025", "titulo": "Los Cuatro Fantásticos: Primeros pasos", "anio": "2025"}
+  ]
+}

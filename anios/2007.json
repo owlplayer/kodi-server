@@ -1,0 +1,8 @@
+{
+  "anio": "2007",
+  "total": 2,
+  "peliculas": [
+    {"id": "tropa-de-elite-2007", "titulo": "Tropa de élite"},
+    {"id": "duro-de-matar-4-0-2007", "titulo": "La jungla 4.0"}
+  ]
+}

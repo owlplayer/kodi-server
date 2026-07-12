@@ -1,0 +1,12 @@
+{
+  "genero": "Drama",
+  "total": 5,
+  "peliculas": [
+    {"id": "apocalypto-2006", "titulo": "Apocalypto", "anio": "2006"},
+    {"id": "atrapame-si-puedes-2002", "titulo": "Atrápame si puedes", "anio": "2002"},
+    {"id": "gattaca-experimento-genetico-1997", "titulo": "Gattaca", "anio": "1997"},
+    {"id": "peaky-blinders-el-hombre-inmortal-2026", "titulo": "Peaky Blinders: El hombre inmortal", "anio": "2026"},
+    {"id": "tropa-de-elite-2007", "titulo": "Tropa de élite", "anio": "2007"},
+    {"id": "un-mundo-perfecto-1993", "titulo": "Un mundo perfecto", "anio": "1993"}
+  ]
+}

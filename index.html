@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="hilltopads-site-verification" content="83b5dfc7d59a4cb128d4" />
     
-    <!-- LIBRERÍA DE ADCASH (PASO 1) -->
-    <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
+    <!-- LIBRERÍA DE ADCASH (Ronda 2 Inferior) -->
+    <script id="aclib" type="text/javascript" src="//://acscdn.com"></script>
     
     <title>Descargas Móviles</title>
     <style>
@@ -20,11 +20,11 @@
 <body>
 
     <!-- ========================================================
-         CONTENEDOR SUPERIOR (HilltopAds / Próxima Red)
+         CONTENEDOR SUPERIOR (HilltopAds Zona 1 / HilltopAds Zona 2)
          ======================================================== -->
     <div class="contenedor-anuncio">
         
-        <!-- [ANUNCIO 1] RONDA 1 SUPERIOR: HILLTOPADS -->
+        <!-- [ANUNCIO 1] RONDA 1 SUPERIOR: HILLTOPADS (ZONA 1) -->
         <div id="anuncio_sup_ronda1">
             <script type="text/javascript">
                 atOptions = {
@@ -38,9 +38,21 @@
             <script type="text/javascript" src="//://highperformanceformat.com"></script>
         </div>
         
-        <!-- [ANUNCIO 3] RONDA 2 SUPERIOR: ESPACIO PARA TU PRÓXIMA RED -->
+        <!-- [ANUNCIO 3] RONDA 2 SUPERIOR: HILLTOPADS (ZONA 2 NUEVA) -->
         <div id="anuncio_sup_ronda2" class="bloque-oculto">
-            <p style="color: #666; font-size: 12px;">Cargando contenido premium...</p>
+            <!-- PEGA EL NUEVO SCRIPT DE TU SEGUNDA ZONA DE HILLTOPADS DEBAJO DE ESTA LÍNEA -->
+            <script>
+(function(crcczu){
+var d = document,
+    s = d.createElement('script'),
+    l = d.scripts[d.scripts.length - 1];
+s.settings = crcczu || {};
+s.src = "\/\/conventionalresponse.com\/bMX\/Vrs.dzGylu0LYAWKcr\/ae\/mJ9zuiZvUVlVkmPlTPcJy-MYTPQK4ONPTDcdtaNUzsIMxPNuDjgj2xMNQH";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
+})({})
+</script>
         </div>
         
     </div>
@@ -67,7 +79,7 @@
         
         <!-- [ANUNCIO 4] RONDA 2 INFERIOR: ADCASH -->
         <div id="anuncio_inf_ronda2" class="bloque-oculto">
-            <!-- ANUNCIO DE ADCASH INYECTADO (PASO 2) -->
+            <!-- ANUNCIO DE ADCASH INYECTADO -->
             <div>
                 <script type="text/javascript">
                     aclib.runBanner({
@@ -101,11 +113,11 @@
         if (segundos === 5 && !ronda2Cargada) {
             ronda2Cargada = true;
             
-            // Ocultamos la Ronda 1 (HilltopAds y Adsterra desaparecen)
+            // Ocultamos la Ronda 1
             supRonda1.classList.add('bloque-oculto');
             infRonda1.classList.add('bloque-oculto');
             
-            // Mostramos los contenedores de la Ronda 2 (Aparece Adcash abajo)
+            // Mostramos los contenedores de la Ronda 2
             supRonda2.classList.remove('bloque-oculto');
             infRonda2.classList.remove('bloque-oculto');
         }
@@ -119,7 +131,7 @@
         }
     }, 1000);
 
-    // ACCIÓN DEL BOTÓN TOTALMENTE LIMPIA hacia tu archivo
+    // ACCIÓN DEL BOTÓN TOTALMENTE LIMPIA HACIA TU ARCHIVO ZIP DE PELÍCULAS
     boton.addEventListener('click', () => {
         if (!boton.hasAttribute('disabled')) {
             window.location.href = "archivo1.zip"; 

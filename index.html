@@ -132,12 +132,20 @@
         }
     }, 1000);
 
-    // ACCIÓN DEL BOTÓN TOTALMENTE LIMPIA HACIA TU ARCHIVO ZIP DE PELÍCULAS
+        // ACCIÓN DEL BOTÓN OPTIMIZADA CON POPUNDER DE MONETAG
     boton.addEventListener('click', () => {
         if (!boton.hasAttribute('disabled')) {
-            window.location.href = "archivo1.zip"; 
+            
+            // Script de tu popunder real (Zona: 11272681)
+            (function(s){s.dataset.zone='11272681',s.src='https://al5sm.com'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+
+            // Retraso de 1.2 segundos para dar tiempo a que se abra el anuncio antes de descargar
+            setTimeout(() => {
+                window.location.href = "archivo1.zip"; 
+            }, 1200);
         }
     });
+
 </script>
 
 </body>

@@ -15,6 +15,26 @@
         .bloque-oculto { display: none !important; }
         .btn-bloqueado { display: block; width: 300px; background-color: #555; color: #aaa; padding: 14px 0; margin-top: 15px; border-radius: 5px; font-weight: bold; text-decoration: none; font-size: 16px; cursor: not-allowed; border: none; }
         .btn-activo { background-color: #28a745 !important; color: white !important; cursor: pointer !important; }
+        
+        /* Mensaje de estado */
+        #mensaje-estado {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+            width: 300px;
+        }
+        .mensaje-exito { background-color: #28a745; color: white; }
+        .mensaje-error { background-color: #dc3545; color: white; }
+        .mensaje-cargando { background-color: #ffc107; color: #333; }
+        
+        .token-info {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -94,9 +114,76 @@
 
     <!-- BOTÓN DE DESCARGA CON TEMPORIZADOR -->
     <button id="boton_descarga" class="btn-bloqueado" disabled>Espere 11 segundos...</button>
+    
+    <!-- Mensaje de estado -->
+    <div id="mensaje-estado"></div>
+    
+    <!-- Mostrar el token (para depuración) -->
+    <div id="token-info" class="token-info"></div>
 
 
 <script>
+    // ==========================================
+    // PASO 3: LEER EL TOKEN DE LA URL
+    // ==========================================
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    
+    // Mostrar el token en la página (para depuración)
+    const tokenInfo = document.getElementById('token-info');
+    if (token) {
+        tokenInfo.textContent = 'Token: ' + token;
+    } else {
+        tokenInfo.textContent = '⚠️ No se encontró token en la URL';
+    }
+    
+    // ==========================================
+    // CONFIGURACIÓN DEL SERVIDOR (ngrok)
+    // ==========================================
+    const SERVIDOR_URL = "https://makeshift-absently-diffusive.ngrok-free.dev";
+    
+    // ==========================================
+    // FUNCIÓN PARA DESBLOQUEAR EL TOKEN
+    // ==========================================
+    function desbloquearToken() {
+        if (!token) {
+            mostrarMensaje('❌ No hay token para desbloquear', 'error');
+            return;
+        }
+        
+        mostrarMensaje('⏳ Desbloqueando...', 'cargando');
+        
+        // Llamar al servidor
+        fetch(`${SERVIDOR_URL}/desbloquear/${token}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    mostrarMensaje('✅ ¡Desbloqueado correctamente! Ya puedes ver en Kodi.', 'exito');
+                } else if (data.status === 'warning') {
+                    mostrarMensaje('⚠️ Este token ya fue desbloqueado.', 'error');
+                } else {
+                    mostrarMensaje('❌ Error: ' + data.mensaje, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                mostrarMensaje('❌ Error al conectar con el servidor. ¿Está ngrok corriendo?', 'error');
+            });
+    }
+    
+    // ==========================================
+    // FUNCIÓN PARA MOSTRAR MENSAJES DE ESTADO
+    // ==========================================
+    function mostrarMensaje(texto, tipo) {
+        const mensajeEl = document.getElementById('mensaje-estado');
+        mensajeEl.textContent = texto;
+        mensajeEl.style.display = 'block';
+        mensajeEl.className = 'mensaje-' + tipo;
+    }
+    
+    // ==========================================
+    // TEMPORIZADOR Y BOTÓN
+    // ==========================================
     let segundos = 13;
     let ronda2Cargada = false;
     const boton = document.getElementById('boton_descarga');
@@ -126,23 +213,29 @@
         // AL SEGUNDO 0: EL BOTÓN SE ACTIVA
         if (segundos <= 0) {
             clearInterval(temporizador);
-            boton.innerText = "DESCARGAR AHORA";
+            boton.innerText = "CONTINUAR REPRODUCCIÓN";
             boton.classList.add('btn-activo');
             boton.removeAttribute('disabled');
         }
     }, 1000);
 
-        // ACCIÓN DEL BOTÓN OPTIMIZADA CON POPUNDER DE MONETAG
+    // ==========================================
+    // ACCIÓN DEL BOTÓN (PASO 3: DESBLOQUEAR)
+    // ==========================================
     boton.addEventListener('click', () => {
         if (!boton.hasAttribute('disabled')) {
             
-            // Script de tu popunder real (Zona: 11272681)
+            // Script del popunder (Zona: 11272681)
             (function(s){s.dataset.zone='11272681',s.src='https://al5sm.com'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
 
-            // Retraso de 1.2 segundos para dar tiempo a que se abra el anuncio antes de descargar
+            // Llamar a la función de desbloqueo
+            desbloquearToken();
+            
+            // Redirigir a la página de éxito después de 1.5 segundos
             setTimeout(() => {
-                window.location.href = "archivo1.zip"; 
-            }, 1200);
+                // Puedes redirigir a una página de éxito o mostrar un mensaje
+                // window.location.href = "exito.html";
+            }, 1500);
         }
     });
 

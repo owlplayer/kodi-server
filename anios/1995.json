@@ -1,0 +1,8 @@
+{
+  "anio": "1995",
+  "total": 2,
+  "peliculas": [
+    {"id": "mortal-kombat-1995", "titulo": "Mortal Kombat"},
+    {"id": "duro-de-matar-3-la-venganza-1995", "titulo": "Jungla de cristal: la venganza"}
+  ]
+}

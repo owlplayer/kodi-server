@@ -1,0 +1,7 @@
+{
+  "genero": "Historia",
+  "total": 1,
+  "peliculas": [
+    {"id": "apocalypto-2006", "titulo": "Apocalypto", "anio": "2006"}
+  ]
+}

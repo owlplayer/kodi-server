@@ -1,0 +1,8 @@
+{
+  "anio": "2026",
+  "total": 2,
+  "peliculas": [
+    {"id": "mortal-kombat-ii", "titulo": "Mortal Kombat II"},
+    {"id": "peaky-blinders-el-hombre-inmortal-2026", "titulo": "Peaky Blinders: El hombre inmortal"}
+  ]
+}

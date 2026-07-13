@@ -1,0 +1,11 @@
+{
+  "coleccion": "Die Hard (Jungla de cristal)",
+  "total": 5,
+  "peliculas": [
+    {"id": "duro-de-matar-1988", "titulo": "Jungla de cristal", "anio": "1988"},
+    {"id": "duro-de-matar-2-1990", "titulo": "La jungla 2: Alerta roja", "anio": "1990"},
+    {"id": "duro-de-matar-3-la-venganza-1995", "titulo": "Jungla de cristal: la venganza", "anio": "1995"},
+    {"id": "duro-de-matar-4-0-2007", "titulo": "La jungla 4.0", "anio": "2007"},
+    {"id": "duro-de-matar-un-buen-dia-para-morir-2013", "titulo": "La jungla de cristal V", "anio": "2013"}
+  ]
+}

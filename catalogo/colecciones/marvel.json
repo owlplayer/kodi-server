@@ -1,1 +1,8 @@
-
+{
+  "coleccion": "Marvel",
+  "total": 2,
+  "peliculas": [
+    {"id": "capitan-america-un-nuevo-mundo-2025", "titulo": "Capitán América: Brave New World", "anio": "2025"},
+    {"id": "los-4-fantasticos-primeros-pasos-2025", "titulo": "Los Cuatro Fantásticos: Primeros pasos", "anio": "2025"}
+  ]
+}

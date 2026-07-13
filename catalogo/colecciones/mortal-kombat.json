@@ -1,1 +1,8 @@
-
+{
+  "coleccion": "Mortal Kombat",
+  "total": 2,
+  "peliculas": [
+    {"id": "mortal-kombat-1995", "titulo": "Mortal Kombat", "anio": "1995"},
+    {"id": "mortal-kombat-ii", "titulo": "Mortal Kombat II", "anio": "2026"}
+  ]
+}

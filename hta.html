@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Descargas Móviles</title>
 
-    <!-- ==========================================
-         🔥 LIBRERÍA ADCASH (OBLIGATORIA)
-         ========================================== -->
+    <!-- Librería Adcash (necesaria para Adcash) -->
     <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 
     <style>
@@ -38,21 +36,24 @@
         }
 
         /* ==========================================
-           4. IN-PAGE PUSH (ARRIBA)
+           IN-PAGE PUSH (Adsterra o Adcash)
            ========================================== */
-        .espacio-superior {
+        .espacio-inpage {
             flex: 1;
             width: 100%;
             min-height: 50px;
             background-color: transparent;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             margin: 0;
         }
+        .espacio-inpage.visible {
+            display: flex;
+        }
 
         /* ==========================================
-           3. BANNER FIJO ADCASH (300x250)
+           BANNER FIJO (Adcash)
            ========================================== */
         .banner-fijo {
             width: 300px;
@@ -75,7 +76,7 @@
         }
 
         /* ==========================================
-           2. ESPACIO LIBRE (FUTURO BANNER)
+           ESPACIO LIBRE (futuro banner)
            ========================================== */
         .espacio-libre {
             width: 300px;
@@ -89,7 +90,7 @@
         }
 
         /* ==========================================
-           1. BOTÓN (ABAJO)
+           BOTÓN
            ========================================== */
         .btn-verde {
             width: 300px;
@@ -133,12 +134,14 @@
     <div class="contenedor">
 
         <!-- ==========================================
-             4. IN-PAGE PUSH (ARRIBA) - Ronda 2
+             IN-PAGE PUSH (Ronda 1: Adsterra, Ronda 3: Adcash)
              ========================================== -->
-        <div id="espacio-inpage" class="espacio-superior"></div>
+        <div id="espacio-inpage" class="espacio-inpage">
+            <div id="contenedor-inpage"></div>
+        </div>
 
         <!-- ==========================================
-             3. BANNER FIJO ADCASH - Ronda 3
+             BANNER FIJO (Adcash) - Ronda 2
              ========================================== -->
         <div id="banner-fijo" class="banner-fijo">
             <div>
@@ -151,12 +154,12 @@
         </div>
 
         <!-- ==========================================
-             2. ESPACIO LIBRE (FUTURO BANNER)
+             ESPACIO LIBRE
              ========================================== -->
         <div id="espacio-libre" class="espacio-libre"></div>
 
         <!-- ==========================================
-             1. BOTÓN (ABAJO)
+             BOTÓN
              ========================================== -->
         <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">
             Desbloquear
@@ -177,19 +180,54 @@
         let temporizadorRondas = null;
         let temporizadorBoton = null;
         let rondasIniciadas = false;
-        let inpageCargado = false;
+        let adsterraCargado = false;
+        let adcashCargado = false;
         let bannerCargado = false;
 
         const boton = document.getElementById('boton_descarga');
         const espacioInpage = document.getElementById('espacio-inpage');
+        const contenedorInpage = document.getElementById('contenedor-inpage');
         const bannerFijo = document.getElementById('banner-fijo');
 
         // ==========================================
-        // FUNCIÓN: CARGAR IN-PAGE PUSH (Ronda 2)
+        // FUNCIÓN: CARGAR IN-PAGE PUSH (Adsterra)
         // ==========================================
-        function cargarInPagePush() {
-            if (inpageCargado) return;
-            inpageCargado = true;
+        function cargarAdsterraInpage() {
+            if (adsterraCargado) return;
+            adsterraCargado = true;
+
+            contenedorInpage.innerHTML = '';
+
+            var configScript = document.createElement('script');
+            configScript.type = 'text/javascript';
+            configScript.textContent = `
+                atOptions = {
+                    'key' : 'c7a0c6c1ac62646100fe3c77297f3b37',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            `;
+            contenedorInpage.appendChild(configScript);
+
+            var invokeScript = document.createElement('script');
+            invokeScript.type = 'text/javascript';
+            invokeScript.src = '//www.highperformanceformat.com/c7a0c6c1ac62646100fe3c77297f3b37/invoke.js';
+            invokeScript.async = true;
+            contenedorInpage.appendChild(invokeScript);
+
+            console.log('📦 In-Page Push (Adsterra) cargado');
+        }
+
+        // ==========================================
+        // FUNCIÓN: CARGAR IN-PAGE PUSH (Adcash)
+        // ==========================================
+        function cargarAdcashInpage() {
+            if (adcashCargado) return;
+            adcashCargado = true;
+
+            contenedorInpage.innerHTML = '';
 
             var div = document.createElement('div');
             var script = document.createElement('script');
@@ -201,19 +239,20 @@
                 });
             `;
             div.appendChild(script);
-            espacioInpage.appendChild(div);
-            console.log('📦 In-Page Push (Adcash) cargado en Ronda 2');
+            contenedorInpage.appendChild(div);
+
+            console.log('📦 In-Page Push (Adcash) cargado');
         }
 
         // ==========================================
-        // FUNCIÓN: CARGAR BANNER FIJO (Ronda 3)
+        // FUNCIÓN: CARGAR BANNER FIJO (Adcash)
         // ==========================================
         function cargarBannerFijo() {
             if (bannerCargado) return;
             bannerCargado = true;
 
             bannerFijo.classList.add('visible');
-            console.log('📦 Banner fijo (Adcash) cargado en Ronda 3');
+            console.log('📦 Banner fijo (Adcash) cargado en Ronda 2');
         }
 
         // ==========================================
@@ -223,10 +262,24 @@
             rondaActual = ronda;
             console.log(`📍 Ronda ${ronda} activa`);
 
-            if (ronda === 2) {
-                cargarInPagePush();
-            } else if (ronda === 3) {
+            // Ocultar todo
+            espacioInpage.classList.remove('visible');
+            bannerFijo.classList.remove('visible');
+
+            if (ronda === 1) {
+                // Ronda 1: Adsterra In-Page
+                cargarAdsterraInpage();
+                espacioInpage.classList.add('visible');
+                console.log('👁️ In-Page Push (Adsterra) visible - Ronda 1');
+            } else if (ronda === 2) {
+                // Ronda 2: Banner fijo Adcash
                 cargarBannerFijo();
+                console.log('👁️ Banner fijo (Adcash) visible - Ronda 2');
+            } else if (ronda === 3) {
+                // Ronda 3: Adcash In-Page
+                cargarAdcashInpage();
+                espacioInpage.classList.add('visible');
+                console.log('👁️ In-Page Push (Adcash) visible - Ronda 3');
             }
         }
 
@@ -237,7 +290,7 @@
             if (rondasIniciadas) return;
             rondasIniciadas = true;
 
-            console.log('🚀 Rondas iniciadas automáticamente al cargar la página');
+            console.log('🚀 Rondas iniciadas automáticamente al cargar');
             cambiarRonda(1);
 
             let contadorRonda = DURACION_RONDA;
@@ -254,12 +307,14 @@
 
                 if (rondaTemp >= 3 && contadorRonda <= 0) {
                     console.log('✅ Todas las rondas completadas');
+                    espacioInpage.classList.remove('visible');
+                    bannerFijo.classList.remove('visible');
                 }
             }, 1000);
         }
 
         // ==========================================
-        // FUNCIÓN: INICIAR CONTEO DEL BOTÓN (SIEMPRE 30s)
+        // FUNCIÓN: INICIAR CONTEO DEL BOTÓN (30s fijos)
         // ==========================================
         function iniciarConteo() {
             if (activo) return;
@@ -306,7 +361,7 @@
         }
 
         // ==========================================
-        // 🚀 INICIAR RONDAS AL CARGAR
+        // INICIAR RONDAS AL CARGAR
         // ==========================================
         window.addEventListener('load', function() {
             iniciarRondas();

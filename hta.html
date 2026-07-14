@@ -17,6 +17,7 @@
             font-family: Arial, sans-serif;
         }
         
+        /* Empuja el botón hacia abajo */
         .contenido {
             flex: 1;
             display: flex;
@@ -26,7 +27,7 @@
             width: 100%;
             max-width: 400px;
             padding: 20px;
-            padding-bottom: 40px;
+            padding-bottom: 20px;
         }
         
         .btn-verde {
@@ -42,17 +43,22 @@
             cursor: pointer;
             border: none;
             transition: all 0.3s ease;
+            /* Sombra para que resalte */
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }
         .btn-verde:hover {
             background-color: #218838;
+            box-shadow: 0 4px 20px rgba(40, 167, 69, 0.5);
         }
         .btn-gris {
             background-color: #6c757d !important;
             color: #999 !important;
             cursor: not-allowed !important;
+            box-shadow: none !important;
         }
         .btn-gris:hover {
             background-color: #6c757d !important;
+            box-shadow: none !important;
         }
         
         .token-info {

@@ -17,7 +17,7 @@
             font-family: Arial, sans-serif;
         }
         
-        /* Empuja el botón hacia abajo */
+        /* Contenedor principal */
         .contenido {
             flex: 1;
             display: flex;
@@ -30,6 +30,37 @@
             padding-bottom: 20px;
         }
         
+        /* ==========================================
+           CUADRO BANNER FIJO (Ronda 3) - 50px abajo del borde superior
+           ========================================== */
+        .banner-fijo {
+            width: 300px;
+            height: 250px;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px; /* 50px abajo del borde superior */
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .banner-fijo iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .banner-fijo .placeholder {
+            color: #555;
+            font-size: 13px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        /* ==========================================
+           BOTÓN (50px hacia arriba desde el fondo)
+           ========================================== */
         .btn-verde {
             width: 100%;
             max-width: 300px;
@@ -43,8 +74,8 @@
             cursor: pointer;
             border: none;
             transition: all 0.3s ease;
-            /* Sombra para que resalte */
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            transform: translateY(-50px);
         }
         .btn-verde:hover {
             background-color: #218838;
@@ -68,34 +99,113 @@
             word-break: break-all;
             text-align: center;
             width: 100%;
+            transform: translateY(-50px);
         }
     </style>
 </head>
 <body>
 
     <!-- ==========================================
-         BOTÓN (abajo del todo)
+         BANNER FIJO (Ronda 3) - 50px abajo del borde superior
          ========================================== -->
-    <div class="contenido">
-        <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">Desbloquear</button>
-        <div id="token-info" class="token-info"></div>
+    <div id="banner-container" class="banner-fijo">
+        <div class="placeholder" id="banner-placeholder">
+            ⏳ Banner fijo (Ronda 3)<br>
+            <span style="color:#444;font-size:11px;">Se cargará en la Ronda 3</span>
+        </div>
     </div>
 
     <!-- ==========================================
-         ADSTERRA SOCIAL BAR (justo antes de </body>)
+         BOTÓN (50px hacia arriba)
          ========================================== -->
-    <script src="https://pl30356267.effectivecpmnetwork.com/62/0c/5b/620c5bdb5407c0cb7f17f61490f4edea.js"></script>
+    <div class="contenido">
+        <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">Desbloquear</button>
+        <div id="token-info" class="token-info">Token: PRUEBA-123</div>
+    </div>
+
+    <!-- ==========================================
+         SOCIAL BAR (se carga en Ronda 2)
+         ========================================== -->
+    <div id="social-bar-container"></div>
 
     <script>
         // ==========================================
         // VARIABLES
         // ==========================================
-        const DURACION = 45;
-        let tiempoRestante = DURACION;
+        const DURACION_RONDA = 10;
+        let tiempoRestante = DURACION_RONDA * 3;
+        let rondaActual = 1;
         let activo = false;
         let temporizador = null;
+        let socialBarCargada = false;
+        let bannerCargado = false;
+        
         const boton = document.getElementById('boton_descarga');
-        const tokenInfo = document.getElementById('token-info');
+        const bannerContainer = document.getElementById('banner-container');
+        const bannerPlaceholder = document.getElementById('banner-placeholder');
+        const socialContainer = document.getElementById('social-bar-container');
+
+        // ==========================================
+        // FUNCIÓN: CARGAR SOCIAL BAR (Ronda 2)
+        // ==========================================
+        function cargarSocialBar() {
+            if (socialBarCargada) return;
+            socialBarCargada = true;
+            
+            var script = document.createElement('script');
+            script.src = 'https://pl30356267.effectivecpmnetwork.com/62/0c/5b/620c5bdb5407c0cb7f17f61490f4edea.js';
+            script.async = true;
+            document.body.appendChild(script);
+            console.log('📦 Social Bar cargada en Ronda 2');
+        }
+
+        // ==========================================
+        // FUNCIÓN: CARGAR BANNER FIJO (Ronda 3)
+        // ==========================================
+        function cargarBannerFijo() {
+            if (bannerCargado) return;
+            bannerCargado = true;
+            
+            // Reemplazar el placeholder con el código del banner
+            bannerContainer.innerHTML = '';
+            
+            // Script de configuración
+            var configScript = document.createElement('script');
+            configScript.type = 'text/javascript';
+            configScript.textContent = `
+                atOptions = {
+                    'key' : '5a9a95855c3eee1eddafaafd625faa2e',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            `;
+            bannerContainer.appendChild(configScript);
+            
+            // Script de invocación
+            var invokeScript = document.createElement('script');
+            invokeScript.type = 'text/javascript';
+            invokeScript.src = 'https://www.highperformanceformat.com/5a9a95855c3eee1eddafaafd625faa2e/invoke.js';
+            invokeScript.async = true;
+            bannerContainer.appendChild(invokeScript);
+            
+            console.log('📦 Banner fijo cargado en Ronda 3');
+        }
+
+        // ==========================================
+        // FUNCIÓN: CAMBIAR RONDA
+        // ==========================================
+        function cambiarRonda(ronda) {
+            rondaActual = ronda;
+            console.log(`📍 Ronda ${ronda} activa`);
+            
+            if (ronda === 2) {
+                cargarSocialBar();
+            } else if (ronda === 3) {
+                cargarBannerFijo();
+            }
+        }
 
         // ==========================================
         // FUNCIÓN: INICIAR CONTEO
@@ -104,31 +214,34 @@
             if (activo) return;
             
             boton.className = 'btn-gris';
-            boton.textContent = `Espere ${tiempoRestante}s`;
+            boton.textContent = `⏳ Espere ${tiempoRestante}s`;
             boton.disabled = true;
             activo = true;
             
+            cambiarRonda(1);
+            
+            let contadorRonda = DURACION_RONDA;
+            let rondaTemp = 1;
+            
             temporizador = setInterval(() => {
                 tiempoRestante--;
-                boton.textContent = `Espere ${tiempoRestante}s`;
+                contadorRonda--;
+                boton.textContent = `⏳ Espere ${tiempoRestante}s`;
+                
+                if (contadorRonda <= 0 && rondaTemp < 3) {
+                    rondaTemp++;
+                    contadorRonda = DURACION_RONDA;
+                    cambiarRonda(rondaTemp);
+                }
                 
                 if (tiempoRestante <= 0) {
                     clearInterval(temporizador);
                     boton.className = 'btn-verde';
-                    boton.textContent = 'Continuar Reproducción';
+                    boton.textContent = '✅ Continuar Reproducción';
                     boton.disabled = false;
                     activo = false;
                 }
             }, 1000);
-        }
-
-        // ==========================================
-        // LEER TOKEN DE LA URL
-        // ==========================================
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        if (token) {
-            tokenInfo.textContent = 'Token: ' + token;
         }
     </script>
 

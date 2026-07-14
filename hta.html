@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="hilltopads-site-verification" content="83b5dfc7d59a4cb128d4" />
-    <title>Prueba In-Page Push</title>
+    <title>Prueba Adsterra - In-Page Push</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -42,9 +41,6 @@
             color: #ccc !important;
             cursor: not-allowed !important;
         }
-        .btn-gris:hover {
-            background-color: #6c757d !important;
-        }
         
         .token-info {
             color: #666;
@@ -59,7 +55,7 @@
             margin-top: 5px;
         }
         
-        #contenedor_inpage {
+        #contenedor_adsterra {
             width: 100%;
             max-width: 400px;
             min-height: 250px;
@@ -77,11 +73,11 @@
 <body>
 
     <!-- ==========================================
-         CONTENEDOR PARA IN-PAGE PUSH
+         CONTENEDOR PARA ADSTERRA
          ========================================== -->
-    <div id="contenedor_inpage">
+    <div id="contenedor_adsterra">
         <p style="color: #666; font-size: 13px; text-align: center; padding: 20px;">
-            ⏳ Cargando In-Page Push...<br>
+            ⏳ Cargando Adsterra In-Page Push...<br>
             <span style="color:#444; font-size: 11px;">Duración: 45 segundos</span>
         </p>
     </div>
@@ -89,7 +85,7 @@
     <!-- ==========================================
          ESTADO
          ========================================== -->
-    <p class="estado-label" id="estado_label">📦 In-Page Push cargado automáticamente</p>
+    <p class="estado-label" id="estado_label">📦 Adsterra In-Page Push</p>
 
     <!-- ==========================================
          BOTÓN
@@ -104,18 +100,28 @@
 
 <script>
     // ==========================================
-    // 🚀 CARGAR IN-PAGE PUSH AL INICIO
+    // 🚀 CARGAR ADSTERRA AL INICIO
     // ==========================================
-    (function(cdqyl){
-        var d = document,
-            s = d.createElement('script'),
-            l = d.scripts[d.scripts.length - 1];
-        s.settings = cdqyl || {};
-        s.src = "\/\/conventionalresponse.com\/boX\/VQsWd.GXlc0rYzWOcG\/FeGma9CuZZJUZlpk\/PkT\/cHyIMLjfAx1QMVjRkBt-NuzcIkyVMgD\/UozRMxwd";
-        s.async = true;
-        s.referrerPolicy = 'no-referrer-when-downgrade';
-        l.parentNode.insertBefore(s, l);
-    })({})
+    (function() {
+        var script1 = document.createElement('script');
+        script1.type = 'text/javascript';
+        script1.text = `
+            atOptions = {
+                'key' : 'c7a0c6c1ac62646100fe3c77297f3b37',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+            };
+        `;
+        document.head.appendChild(script1);
+
+        var script2 = document.createElement('script');
+        script2.type = 'text/javascript';
+        script2.src = '//www.highperformanceformat.com/c7a0c6c1ac62646100fe3c77297f3b37/invoke.js';
+        script2.async = true;
+        document.head.appendChild(script2);
+    })();
 
     // ==========================================
     // VARIABLES
@@ -133,14 +139,12 @@
     function iniciarConteo() {
         if (activo) return;
         
-        // Cambiar botón a gris
         boton.className = 'btn-gris';
         boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;
         boton.disabled = true;
         activo = true;
         estadoLabel.textContent = '⏳ Conteo regresivo...';
         
-        // Iniciar conteo
         temporizador = setInterval(() => {
             tiempoRestante--;
             boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;

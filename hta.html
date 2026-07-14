@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba Adsterra</title>
+    <title>Prueba Adsterra - Social Bar</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -61,7 +61,7 @@
     <!-- ==========================================
          ESTADO
          ========================================== -->
-    <p class="estado-label" id="estado_label">📦 Cargando Adsterra...</p>
+    <p class="estado-label" id="estado_label">📦 Cargando Adsterra Social Bar...</p>
 
     <!-- ==========================================
          BOTÓN
@@ -73,89 +73,59 @@
          ========================================== -->
     <div id="token-info" class="token-info">Token: PRUEBA-123</div>
 
+    <!-- ==========================================
+         🔥 ADSTERRA SOCIAL BAR
+         (justo antes de cerrar </body>)
+         ========================================== -->
+    <script src="https://pl30356267.effectivecpmnetwork.com/62/0c/5b/620c5bdb5407c0cb7f17f61490f4edea.js"></script>
 
-<script>
-    // ==========================================
-    // 🚀 CARGAR ADSTERRA (SIN CONTENEDOR)
-    // ==========================================
-    (function() {
-        // Configurar atOptions
-        var configScript = document.createElement('script');
-        configScript.type = 'text/javascript';
-        configScript.textContent = `
-            atOptions = {
-                'key' : 'c7a0c6c1ac62646100fe3c77297f3b37',
-                'format' : 'iframe',
-                'height' : 250,
-                'width' : 300,
-                'params' : {}
-            };
-        `;
-        document.head.appendChild(configScript);
+    <script>
+        // ==========================================
+        // VARIABLES
+        // ==========================================
+        const DURACION = 45;
+        let tiempoRestante = DURACION;
+        let activo = false;
+        let temporizador = null;
+        const boton = document.getElementById('boton_descarga');
+        const estadoLabel = document.getElementById('estado_label');
 
-        // Cargar invoke.js
-        var invokeScript = document.createElement('script');
-        invokeScript.type = 'text/javascript';
-        invokeScript.src = '//www.highperformanceformat.com/c7a0c6c1ac62646100fe3c77297f3b37/invoke.js';
-        invokeScript.async = true;
-
-        invokeScript.onload = function() {
-            document.getElementById('estado_label').textContent = '✅ Adsterra cargado';
-        };
-
-        invokeScript.onerror = function() {
-            document.getElementById('estado_label').textContent = '❌ Error cargando Adsterra';
-        };
-
-        document.head.appendChild(invokeScript);
-    })();
-
-    // ==========================================
-    // VARIABLES
-    // ==========================================
-    const DURACION = 45;
-    let tiempoRestante = DURACION;
-    let activo = false;
-    let temporizador = null;
-    const boton = document.getElementById('boton_descarga');
-    const estadoLabel = document.getElementById('estado_label');
-
-    // ==========================================
-    // FUNCIÓN: INICIAR CONTEO
-    // ==========================================
-    function iniciarConteo() {
-        if (activo) return;
-        
-        boton.className = 'btn-gris';
-        boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;
-        boton.disabled = true;
-        activo = true;
-        estadoLabel.textContent = '⏳ Conteo regresivo...';
-        
-        temporizador = setInterval(() => {
-            tiempoRestante--;
-            boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;
+        // ==========================================
+        // FUNCIÓN: INICIAR CONTEO
+        // ==========================================
+        function iniciarConteo() {
+            if (activo) return;
             
-            if (tiempoRestante <= 0) {
-                clearInterval(temporizador);
-                boton.className = 'btn-verde';
-                boton.textContent = '✅ Continuar Reproducción';
-                boton.disabled = false;
-                activo = false;
-                estadoLabel.textContent = '✅ Prueba completada';
-            }
-        }, 1000);
-    }
+            boton.className = 'btn-gris';
+            boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;
+            boton.disabled = true;
+            activo = true;
+            estadoLabel.textContent = '⏳ Conteo regresivo...';
+            
+            temporizador = setInterval(() => {
+                tiempoRestante--;
+                boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;
+                
+                if (tiempoRestante <= 0) {
+                    clearInterval(temporizador);
+                    boton.className = 'btn-verde';
+                    boton.textContent = '✅ Continuar Reproducción';
+                    boton.disabled = false;
+                    activo = false;
+                    estadoLabel.textContent = '✅ Prueba completada';
+                }
+            }, 1000);
+        }
 
-    // ==========================================
-    // LEER TOKEN DE LA URL
-    // ==========================================
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    if (token) {
-        document.getElementById('token-info').textContent = 'Token: ' + token;
-    }
-</script>
+        // ==========================================
+        // LEER TOKEN DE LA URL
+        // ==========================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            document.getElementById('token-info').textContent = 'Token: ' + token;
+        }
+    </script>
 
 </body>
 </html>

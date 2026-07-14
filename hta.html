@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Descargas Móviles</title>
+
+    <!-- ==========================================
+         🔥 LIBRERÍA ADCASH (OBLIGATORIA)
+         ========================================== -->
+    <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { 
@@ -103,8 +109,14 @@
 
     <div class="contenedor">
 
+        <!-- ==========================================
+             ESPACIO SUPERIOR (In-Page Push - Ronda 2)
+             ========================================== -->
         <div id="espacio-inpage" class="espacio-superior"></div>
 
+        <!-- ==========================================
+             BANNER FIJO (300x250 - Ronda 3)
+             ========================================== -->
         <div id="banner-fijo" class="banner-fijo">
             <div>
                 <script type="text/javascript">
@@ -115,6 +127,9 @@
             </div>
         </div>
 
+        <!-- ==========================================
+             BOTÓN
+             ========================================== -->
         <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">
             Desbloquear
             <span class="token" id="token-info">Token: PRUEBA-123</span>
@@ -127,8 +142,8 @@
         // CONFIGURACIÓN
         // ==========================================
         const DURACION_RONDA = 10;
-        const TIEMPO_TOTAL = 30; // SIEMPRE 30 segundos para el botón
-        let segundosRestantes = TIEMPO_TOTAL; // Para el conteo del botón
+        const TIEMPO_TOTAL = 30;
+        let segundosRestantes = TIEMPO_TOTAL;
         let rondaActual = 1;
         let activo = false;
         let temporizadorRondas = null;
@@ -142,7 +157,7 @@
         const bannerFijo = document.getElementById('banner-fijo');
 
         // ==========================================
-        // FUNCIÓN: CARGAR IN-PAGE PUSH - Ronda 2
+        // FUNCIÓN: CARGAR IN-PAGE PUSH (Ronda 2)
         // ==========================================
         function cargarInPagePush() {
             if (inpageCargado) return;
@@ -157,11 +172,11 @@
                 });
             `;
             espacioInpage.appendChild(script);
-            console.log('📦 In-Page Push cargado en Ronda 2');
+            console.log('📦 In-Page Push (Adcash) cargado en Ronda 2');
         }
 
         // ==========================================
-        // FUNCIÓN: CARGAR BANNER FIJO - Ronda 3
+        // FUNCIÓN: CARGAR BANNER FIJO (Ronda 3)
         // ==========================================
         function cargarBannerFijo() {
             if (bannerCargado) return;
@@ -169,6 +184,7 @@
 
             bannerFijo.classList.add('visible');
 
+            // Ejecutar el script del banner
             var scripts = bannerFijo.querySelectorAll('script');
             scripts.forEach(function(script) {
                 var newScript = document.createElement('script');
@@ -177,7 +193,7 @@
                 bannerFijo.appendChild(newScript);
             });
 
-            console.log('📦 Banner fijo cargado en Ronda 3');
+            console.log('📦 Banner fijo (Adcash) cargado en Ronda 3');
         }
 
         // ==========================================
@@ -216,14 +232,9 @@
                     cambiarRonda(rondaTemp);
                 }
 
-                // Si el botón está activo, actualizar su texto con el tiempo real
-                if (activo) {
-                    // No hacemos nada aquí, el botón tiene su propio temporizador
-                }
-
-                // Si las rondas terminaron y el botón está activo, habilitarlo
                 if (rondaTemp >= 3 && contadorRonda <= 0) {
-                    // Las rondas ya terminaron, el botón se habilita cuando su temporizador llegue a 0
+                    // Rondas completadas
+                    console.log('✅ Todas las rondas completadas');
                 }
             }, 1000);
         }
@@ -234,7 +245,6 @@
         function iniciarConteo() {
             if (activo) return;
 
-            // Siempre comienza en 30 segundos
             segundosRestantes = TIEMPO_TOTAL;
 
             boton.className = 'btn-gris';
@@ -245,7 +255,6 @@
             boton.disabled = true;
             activo = true;
 
-            // Temporizador independiente para el botón
             if (temporizadorBoton) clearInterval(temporizadorBoton);
 
             temporizadorBoton = setInterval(() => {

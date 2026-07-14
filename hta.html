@@ -37,6 +37,9 @@
             gap: 0;
         }
 
+        /* ==========================================
+           4. IN-PAGE PUSH (ARRIBA)
+           ========================================== */
         .espacio-superior {
             flex: 1;
             width: 100%;
@@ -48,6 +51,9 @@
             margin: 0;
         }
 
+        /* ==========================================
+           3. BANNER FIJO ADCASH (300x250)
+           ========================================== */
         .banner-fijo {
             width: 300px;
             height: 250px;
@@ -68,6 +74,23 @@
             border: none;
         }
 
+        /* ==========================================
+           2. ESPACIO LIBRE (FUTURO BANNER)
+           ========================================== */
+        .espacio-libre {
+            width: 300px;
+            height: 250px;
+            background-color: transparent;
+            flex-shrink: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==========================================
+           1. BOTÓN (ABAJO)
+           ========================================== */
         .btn-verde {
             width: 300px;
             background-color: #28a745;
@@ -110,12 +133,12 @@
     <div class="contenedor">
 
         <!-- ==========================================
-             ESPACIO SUPERIOR (In-Page Push - Ronda 2)
+             4. IN-PAGE PUSH (ARRIBA) - Ronda 2
              ========================================== -->
         <div id="espacio-inpage" class="espacio-superior"></div>
 
         <!-- ==========================================
-             BANNER FIJO (300x250 - Ronda 3)
+             3. BANNER FIJO ADCASH - Ronda 3
              ========================================== -->
         <div id="banner-fijo" class="banner-fijo">
             <div>
@@ -128,7 +151,12 @@
         </div>
 
         <!-- ==========================================
-             BOTÓN
+             2. ESPACIO LIBRE (FUTURO BANNER)
+             ========================================== -->
+        <div id="espacio-libre" class="espacio-libre"></div>
+
+        <!-- ==========================================
+             1. BOTÓN (ABAJO)
              ========================================== -->
         <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">
             Desbloquear
@@ -163,6 +191,7 @@
             if (inpageCargado) return;
             inpageCargado = true;
 
+            var div = document.createElement('div');
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.textContent = `
@@ -171,7 +200,8 @@
                     maxAds: 2,
                 });
             `;
-            espacioInpage.appendChild(script);
+            div.appendChild(script);
+            espacioInpage.appendChild(div);
             console.log('📦 In-Page Push (Adcash) cargado en Ronda 2');
         }
 
@@ -183,16 +213,6 @@
             bannerCargado = true;
 
             bannerFijo.classList.add('visible');
-
-            // Ejecutar el script del banner
-            var scripts = bannerFijo.querySelectorAll('script');
-            scripts.forEach(function(script) {
-                var newScript = document.createElement('script');
-                newScript.type = script.type;
-                newScript.textContent = script.textContent;
-                bannerFijo.appendChild(newScript);
-            });
-
             console.log('📦 Banner fijo (Adcash) cargado en Ronda 3');
         }
 
@@ -233,7 +253,6 @@
                 }
 
                 if (rondaTemp >= 3 && contadorRonda <= 0) {
-                    // Rondas completadas
                     console.log('✅ Todas las rondas completadas');
                 }
             }, 1000);

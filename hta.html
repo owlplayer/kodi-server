@@ -31,9 +31,6 @@
             gap: 0;
         }
 
-        /* ==========================================
-           ESPACIO SUPERIOR (In-Page Push aquí)
-           ========================================== */
         .espacio-superior {
             flex: 1;
             width: 100%;
@@ -45,19 +42,19 @@
             margin: 0;
         }
 
-        /* ==========================================
-           BANNER FIJO (300x250)
-           ========================================== */
         .banner-fijo {
             width: 300px;
             height: 250px;
             background-color: transparent;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             flex-shrink: 0;
             margin: 0;
+        }
+        .banner-fijo.visible {
+            display: flex;
         }
         .banner-fijo iframe {
             width: 100%;
@@ -65,9 +62,6 @@
             border: none;
         }
 
-        /* ==========================================
-           BOTÓN (pegado al borde inferior)
-           ========================================== */
         .btn-verde {
             width: 300px;
             background-color: #28a745;
@@ -109,19 +103,18 @@
 
     <div class="contenedor">
 
-        <!-- ==========================================
-             ESPACIO SUPERIOR (In-Page Push)
-             ========================================== -->
         <div id="espacio-inpage" class="espacio-superior"></div>
 
-        <!-- ==========================================
-             BANNER FIJO (300x250)
-             ========================================== -->
-        <div id="banner-fijo" class="banner-fijo"></div>
+        <div id="banner-fijo" class="banner-fijo">
+            <div>
+                <script type="text/javascript">
+                    aclib.runBanner({
+                        zoneId: '11675566',
+                    });
+                </script>
+            </div>
+        </div>
 
-        <!-- ==========================================
-             BOTÓN
-             ========================================== -->
         <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">
             Desbloquear
             <span class="token" id="token-info">Token: PRUEBA-123</span>
@@ -134,10 +127,12 @@
         // CONFIGURACIÓN
         // ==========================================
         const DURACION_RONDA = 10;
-        let tiempoTotal = DURACION_RONDA * 3;
+        const TIEMPO_TOTAL = 30; // SIEMPRE 30 segundos para el botón
+        let segundosRestantes = TIEMPO_TOTAL; // Para el conteo del botón
         let rondaActual = 1;
         let activo = false;
-        let temporizador = null;
+        let temporizadorRondas = null;
+        let temporizadorBoton = null;
         let rondasIniciadas = false;
         let inpageCargado = false;
         let bannerCargado = false;
@@ -147,44 +142,40 @@
         const bannerFijo = document.getElementById('banner-fijo');
 
         // ==========================================
-        // FUNCIÓN: CARGAR IN-PAGE PUSH
+        // FUNCIÓN: CARGAR IN-PAGE PUSH - Ronda 2
         // ==========================================
         function cargarInPagePush() {
             if (inpageCargado) return;
             inpageCargado = true;
 
             var script = document.createElement('script');
-            script.src = 'https://pl30356267.effectivecpmnetwork.com/62/0c/5b/620c5bdb5407c0cb7f17f61490f4edea.js';
-            script.async = true;
+            script.type = 'text/javascript';
+            script.textContent = `
+                aclib.runInPagePush({
+                    zoneId: '11701830',
+                    maxAds: 2,
+                });
+            `;
             espacioInpage.appendChild(script);
             console.log('📦 In-Page Push cargado en Ronda 2');
         }
 
         // ==========================================
-        // FUNCIÓN: CARGAR BANNER FIJO
+        // FUNCIÓN: CARGAR BANNER FIJO - Ronda 3
         // ==========================================
         function cargarBannerFijo() {
             if (bannerCargado) return;
             bannerCargado = true;
 
-            var configScript = document.createElement('script');
-            configScript.type = 'text/javascript';
-            configScript.textContent = `
-                atOptions = {
-                    'key' : '5a9a95855c3eee1eddafaafd625faa2e',
-                    'format' : 'iframe',
-                    'height' : 250,
-                    'width' : 300,
-                    'params' : {}
-                };
-            `;
-            bannerFijo.appendChild(configScript);
+            bannerFijo.classList.add('visible');
 
-            var invokeScript = document.createElement('script');
-            invokeScript.type = 'text/javascript';
-            invokeScript.src = 'https://www.highperformanceformat.com/5a9a95855c3eee1eddafaafd625faa2e/invoke.js';
-            invokeScript.async = true;
-            bannerFijo.appendChild(invokeScript);
+            var scripts = bannerFijo.querySelectorAll('script');
+            scripts.forEach(function(script) {
+                var newScript = document.createElement('script');
+                newScript.type = script.type;
+                newScript.textContent = script.textContent;
+                bannerFijo.appendChild(newScript);
+            });
 
             console.log('📦 Banner fijo cargado en Ronda 3');
         }
@@ -204,7 +195,7 @@
         }
 
         // ==========================================
-        // FUNCIÓN: INICIAR RONDAS AUTOMÁTICAMENTE
+        // FUNCIÓN: INICIAR RONDAS (automático al cargar)
         // ==========================================
         function iniciarRondas() {
             if (rondasIniciadas) return;
@@ -216,16 +207,8 @@
             let contadorRonda = DURACION_RONDA;
             let rondaTemp = 1;
 
-            temporizador = setInterval(() => {
-                tiempoTotal--;
+            temporizadorRondas = setInterval(() => {
                 contadorRonda--;
-
-                if (activo) {
-                    boton.innerHTML = `
-                        ⏳ Espere ${tiempoTotal}s
-                        <span class="token">Token: PRUEBA-123</span>
-                    `;
-                }
 
                 if (contadorRonda <= 0 && rondaTemp < 3) {
                     rondaTemp++;
@@ -233,34 +216,56 @@
                     cambiarRonda(rondaTemp);
                 }
 
-                if (tiempoTotal <= 0) {
-                    clearInterval(temporizador);
-                    if (activo) {
-                        boton.className = 'btn-verde';
-                        boton.innerHTML = `
-                            ✅ Continuar Reproducción
-                            <span class="token">Token: PRUEBA-123</span>
-                        `;
-                        boton.disabled = false;
-                        activo = false;
-                    }
+                // Si el botón está activo, actualizar su texto con el tiempo real
+                if (activo) {
+                    // No hacemos nada aquí, el botón tiene su propio temporizador
+                }
+
+                // Si las rondas terminaron y el botón está activo, habilitarlo
+                if (rondaTemp >= 3 && contadorRonda <= 0) {
+                    // Las rondas ya terminaron, el botón se habilita cuando su temporizador llegue a 0
                 }
             }, 1000);
         }
 
         // ==========================================
-        // FUNCIÓN: INICIAR CONTEO
+        // FUNCIÓN: INICIAR CONTEO DEL BOTÓN (SIEMPRE 30s)
         // ==========================================
         function iniciarConteo() {
             if (activo) return;
 
+            // Siempre comienza en 30 segundos
+            segundosRestantes = TIEMPO_TOTAL;
+
             boton.className = 'btn-gris';
             boton.innerHTML = `
-                ⏳ Espere ${tiempoTotal}s
+                ⏳ Espere ${segundosRestantes}s
                 <span class="token">Token: PRUEBA-123</span>
             `;
             boton.disabled = true;
             activo = true;
+
+            // Temporizador independiente para el botón
+            if (temporizadorBoton) clearInterval(temporizadorBoton);
+
+            temporizadorBoton = setInterval(() => {
+                segundosRestantes--;
+                boton.innerHTML = `
+                    ⏳ Espere ${segundosRestantes}s
+                    <span class="token">Token: PRUEBA-123</span>
+                `;
+
+                if (segundosRestantes <= 0) {
+                    clearInterval(temporizadorBoton);
+                    boton.className = 'btn-verde';
+                    boton.innerHTML = `
+                        ✅ Continuar Reproducción
+                        <span class="token">Token: PRUEBA-123</span>
+                    `;
+                    boton.disabled = false;
+                    activo = false;
+                }
+            }, 1000);
         }
 
         // ==========================================

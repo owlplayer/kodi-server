@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba Adsterra</title>
+    <title>Descargas Móviles</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { 
@@ -18,9 +18,6 @@
             font-family: Arial, sans-serif;
         }
 
-        /* ==========================================
-           CONTENEDOR PRINCIPAL (ocupa toda la altura)
-           ========================================== */
         .contenedor {
             display: flex;
             flex-direction: column;
@@ -35,43 +32,26 @@
         }
 
         /* ==========================================
-           ESPACIO SUPERIOR PARA IN-PAGE PUSH
+           ESPACIO SUPERIOR (In-Page Push aquí)
            ========================================== */
         .espacio-superior {
             flex: 1;
             width: 100%;
             min-height: 50px;
-            background-color: #111;
+            background-color: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #444;
-            font-size: 12px;
-            border: 1px dashed #2a2a2a;
-            border-radius: 4px;
             margin: 0;
-        }
-        .espacio-superior .label {
-            color: #444;
-            font-size: 11px;
-            text-align: center;
-        }
-        .espacio-superior .label span {
-            color: #555;
-            font-size: 10px;
-            display: block;
-            margin-top: 4px;
         }
 
         /* ==========================================
-           BANNER 2 (arriba)
+           BANNER FIJO (300x250)
            ========================================== */
-        .banner-superior {
+        .banner-fijo {
             width: 300px;
             height: 250px;
-            background-color: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 4px;
+            background-color: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,42 +59,10 @@
             flex-shrink: 0;
             margin: 0;
         }
-        .banner-superior iframe {
+        .banner-fijo iframe {
             width: 100%;
             height: 100%;
             border: none;
-        }
-        .banner-superior .placeholder {
-            color: #444;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        /* ==========================================
-           BANNER 1 (inferior)
-           ========================================== */
-        .banner-inferior {
-            width: 300px;
-            height: 250px;
-            background-color: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-            margin: 0;
-        }
-        .banner-inferior iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .banner-inferior .placeholder {
-            color: #444;
-            font-size: 12px;
-            text-align: center;
         }
 
         /* ==========================================
@@ -162,35 +110,17 @@
     <div class="contenedor">
 
         <!-- ==========================================
-             ESPACIO SUPERIOR (In-Page Push aquí)
+             ESPACIO SUPERIOR (In-Page Push)
              ========================================== -->
-        <div id="espacio-inpage" class="espacio-superior">
-            <div class="label">
-                ⏳ In-Page Push<br>
-                <span>Se cargará en la Ronda 2</span>
-            </div>
-        </div>
+        <div id="espacio-inpage" class="espacio-superior"></div>
 
         <!-- ==========================================
-             BANNER 2 (ARRIBA)
+             BANNER FIJO (300x250)
              ========================================== -->
-        <div id="banner2" class="banner-superior">
-            <div class="placeholder" id="banner2-placeholder">
-                ⏳ Banner 2 (Ronda 3)
-            </div>
-        </div>
+        <div id="banner-fijo" class="banner-fijo"></div>
 
         <!-- ==========================================
-             BANNER 1 (ABAJO)
-             ========================================== -->
-        <div id="banner1" class="banner-inferior">
-            <div class="placeholder" id="banner1-placeholder">
-                ⏳ Banner 1 (Ronda 1)
-            </div>
-        </div>
-
-        <!-- ==========================================
-             BOTÓN (pegado al borde inferior)
+             BOTÓN
              ========================================== -->
         <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">
             Desbloquear
@@ -201,22 +131,41 @@
 
     <script>
         // ==========================================
-        // CÓDIGO SOCIAL BAR (In-Page Push)
+        // CONFIGURACIÓN
+        // ==========================================
+        const DURACION_RONDA = 10;
+        let tiempoTotal = DURACION_RONDA * 3;
+        let rondaActual = 1;
+        let activo = false;
+        let temporizador = null;
+        let rondasIniciadas = false;
+        let inpageCargado = false;
+        let bannerCargado = false;
+
+        const boton = document.getElementById('boton_descarga');
+        const espacioInpage = document.getElementById('espacio-inpage');
+        const bannerFijo = document.getElementById('banner-fijo');
+
+        // ==========================================
+        // FUNCIÓN: CARGAR IN-PAGE PUSH
         // ==========================================
         function cargarInPagePush() {
+            if (inpageCargado) return;
+            inpageCargado = true;
+
             var script = document.createElement('script');
             script.src = 'https://pl30356267.effectivecpmnetwork.com/62/0c/5b/620c5bdb5407c0cb7f17f61490f4edea.js';
             script.async = true;
-            document.body.appendChild(script);
-            console.log('📦 In-Page Push cargado');
+            espacioInpage.appendChild(script);
+            console.log('📦 In-Page Push cargado en Ronda 2');
         }
 
         // ==========================================
-        // CÓDIGO BANNER FIJO
+        // FUNCIÓN: CARGAR BANNER FIJO
         // ==========================================
-        function cargarBanner(contenedorId, placeholderId) {
-            var contenedor = document.getElementById(contenedorId);
-            contenedor.innerHTML = '';
+        function cargarBannerFijo() {
+            if (bannerCargado) return;
+            bannerCargado = true;
 
             var configScript = document.createElement('script');
             configScript.type = 'text/javascript';
@@ -229,54 +178,33 @@
                     'params' : {}
                 };
             `;
-            contenedor.appendChild(configScript);
+            bannerFijo.appendChild(configScript);
 
             var invokeScript = document.createElement('script');
             invokeScript.type = 'text/javascript';
             invokeScript.src = 'https://www.highperformanceformat.com/5a9a95855c3eee1eddafaafd625faa2e/invoke.js';
             invokeScript.async = true;
-            contenedor.appendChild(invokeScript);
+            bannerFijo.appendChild(invokeScript);
 
-            console.log(`📦 Banner cargado en ${contenedorId}`);
+            console.log('📦 Banner fijo cargado en Ronda 3');
         }
 
         // ==========================================
-        // VARIABLES
-        // ==========================================
-        const DURACION_RONDA = 10;
-        let tiempoTotal = DURACION_RONDA * 3;
-        let rondaActual = 1;
-        let activo = false;
-        let temporizador = null;
-        let rondasIniciadas = false;
-        let inpageCargado = false;
-        let banner2Cargado = false;
-        let banner1Cargado = false;
-
-        const boton = document.getElementById('boton_descarga');
-
-        // ==========================================
-        // CAMBIAR RONDA
+        // FUNCIÓN: CAMBIAR RONDA
         // ==========================================
         function cambiarRonda(ronda) {
             rondaActual = ronda;
             console.log(`📍 Ronda ${ronda} activa`);
 
-            if (ronda === 1 && !banner1Cargado) {
-                banner1Cargado = true;
-                cargarBanner('banner1', 'banner1-placeholder');
-            } else if (ronda === 2 && !inpageCargado) {
-                inpageCargado = true;
-                document.getElementById('espacio-inpage').innerHTML = '';
+            if (ronda === 2) {
                 cargarInPagePush();
-            } else if (ronda === 3 && !banner2Cargado) {
-                banner2Cargado = true;
-                cargarBanner('banner2', 'banner2-placeholder');
+            } else if (ronda === 3) {
+                cargarBannerFijo();
             }
         }
 
         // ==========================================
-        // INICIAR RONDAS AUTOMÁTICAMENTE
+        // FUNCIÓN: INICIAR RONDAS AUTOMÁTICAMENTE
         // ==========================================
         function iniciarRondas() {
             if (rondasIniciadas) return;
@@ -321,7 +249,7 @@
         }
 
         // ==========================================
-        // INICIAR CONTEO (al presionar el botón)
+        // FUNCIÓN: INICIAR CONTEO
         // ==========================================
         function iniciarConteo() {
             if (activo) return;

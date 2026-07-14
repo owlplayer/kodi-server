@@ -8,78 +8,140 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { 
             width: 100%;
-            min-height: 100vh;
+            height: 100%;
+            max-height: 100vh;
+            overflow: hidden;
             background-color: #0a0a0a;
             display: flex;
             flex-direction: column;
             align-items: center;
             font-family: Arial, sans-serif;
-            padding: 5px;
         }
-        
+
         /* ==========================================
-           BANNER FIJO (Ronda 3) - Reducido verticalmente
+           CONTENEDOR PRINCIPAL (ocupa toda la altura)
            ========================================== */
-        #banner-container {
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 320px;
+            height: 100vh;
+            max-height: 100vh;
+            padding: 0;
+            gap: 0;
+        }
+
+        /* ==========================================
+           ESPACIO SUPERIOR PARA IN-PAGE PUSH
+           ========================================== */
+        .espacio-superior {
+            flex: 1;
+            width: 100%;
+            min-height: 50px;
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 12px;
+            border: 1px dashed #2a2a2a;
+            border-radius: 4px;
+            margin: 0;
+        }
+        .espacio-superior .label {
+            color: #444;
+            font-size: 11px;
+            text-align: center;
+        }
+        .espacio-superior .label span {
+            color: #555;
+            font-size: 10px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ==========================================
+           BANNER 2 (arriba)
+           ========================================== */
+        .banner-superior {
             width: 300px;
             height: 250px;
             background-color: #1a1a1a;
-            border: 1px solid #333;
+            border: 1px solid #2a2a2a;
             border-radius: 4px;
-            margin-top: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             flex-shrink: 0;
+            margin: 0;
         }
-        #banner-container .placeholder {
-            color: #444;
-            font-size: 12px;
-            text-align: center;
-        }
-        #banner-container iframe {
+        .banner-superior iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
-        
+        .banner-superior .placeholder {
+            color: #444;
+            font-size: 12px;
+            text-align: center;
+        }
+
         /* ==========================================
-           SOCIAL BAR - Reducida verticalmente
+           BANNER 1 (inferior)
            ========================================== */
-        #social-bar-container {
-            width: 100%;
-            min-height: 40px;
+        .banner-inferior {
+            width: 300px;
+            height: 250px;
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            margin: 0;
         }
-        
+        .banner-inferior iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .banner-inferior .placeholder {
+            color: #444;
+            font-size: 12px;
+            text-align: center;
+        }
+
         /* ==========================================
-           BOTÓN - Reducido vertical y horizontalmente
+           BOTÓN (pegado al borde inferior)
            ========================================== */
         .btn-verde {
-            width: 240px;
+            width: 300px;
             background-color: #28a745;
             color: white;
-            padding: 10px 0;
-            margin-top: 10px;
-            border-radius: 6px;
+            padding: 12px 0;
+            margin: 0;
+            border-radius: 0 0 8px 8px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             border: none;
             transition: all 0.3s ease;
-            transform: translateY(-50px);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2px;
             line-height: 1.2;
+            flex-shrink: 0;
         }
         .btn-verde .token {
             font-weight: normal;
-            font-size: 9px;
+            font-size: 10px;
             color: rgba(255,255,255,0.6);
         }
         .btn-verde:hover {
@@ -89,95 +151,73 @@
             background-color: #6c757d !important;
             color: #999 !important;
             cursor: not-allowed !important;
-            transform: translateY(-50px);
         }
         .btn-gris .token {
             color: rgba(255,255,255,0.3);
-        }
-        
-        /* Empujar el botón hacia abajo */
-        .contenido {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            width: 100%;
-            max-width: 400px;
-            padding: 10px;
-            padding-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================
-         BANNER FIJO (Ronda 3) - Se carga en Ronda 3
-         ========================================== -->
-    <div id="banner-container">
-        <div class="placeholder" id="banner-placeholder">
-            ⏳ Cargando banner...
+    <div class="contenedor">
+
+        <!-- ==========================================
+             ESPACIO SUPERIOR (In-Page Push aquí)
+             ========================================== -->
+        <div id="espacio-inpage" class="espacio-superior">
+            <div class="label">
+                ⏳ In-Page Push<br>
+                <span>Se cargará en la Ronda 2</span>
+            </div>
         </div>
-    </div>
 
-    <!-- ==========================================
-         SOCIAL BAR (Ronda 2) - Se carga en Ronda 2
-         ========================================== -->
-    <div id="social-bar-container"></div>
+        <!-- ==========================================
+             BANNER 2 (ARRIBA)
+             ========================================== -->
+        <div id="banner2" class="banner-superior">
+            <div class="placeholder" id="banner2-placeholder">
+                ⏳ Banner 2 (Ronda 3)
+            </div>
+        </div>
 
-    <!-- ==========================================
-         BOTÓN (con token dentro)
-         ========================================== -->
-    <div class="contenido">
+        <!-- ==========================================
+             BANNER 1 (ABAJO)
+             ========================================== -->
+        <div id="banner1" class="banner-inferior">
+            <div class="placeholder" id="banner1-placeholder">
+                ⏳ Banner 1 (Ronda 1)
+            </div>
+        </div>
+
+        <!-- ==========================================
+             BOTÓN (pegado al borde inferior)
+             ========================================== -->
         <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">
             Desbloquear
             <span class="token" id="token-info">Token: PRUEBA-123</span>
         </button>
-    </div>
 
+    </div>
 
     <script>
         // ==========================================
-        // VARIABLES
+        // CÓDIGO SOCIAL BAR (In-Page Push)
         // ==========================================
-        const DURACION_RONDA = 10;
-        let tiempoRestante = DURACION_RONDA * 3; // 30s totales
-        let rondaActual = 1;
-        let activo = false;
-        let temporizador = null;
-        let socialBarCargada = false;
-        let bannerCargado = false;
-        let rondasIniciadas = false;
-        
-        const boton = document.getElementById('boton_descarga');
-        const bannerContainer = document.getElementById('banner-container');
-        const bannerPlaceholder = document.getElementById('banner-placeholder');
-        const socialContainer = document.getElementById('social-bar-container');
-        const tokenInfo = document.getElementById('token-info');
-
-        // ==========================================
-        // FUNCIÓN: CARGAR SOCIAL BAR (Ronda 2)
-        // ==========================================
-        function cargarSocialBar() {
-            if (socialBarCargada) return;
-            socialBarCargada = true;
-            
+        function cargarInPagePush() {
             var script = document.createElement('script');
             script.src = 'https://pl30356267.effectivecpmnetwork.com/62/0c/5b/620c5bdb5407c0cb7f17f61490f4edea.js';
             script.async = true;
             document.body.appendChild(script);
-            console.log('📦 Social Bar cargada en Ronda 2');
+            console.log('📦 In-Page Push cargado');
         }
 
         // ==========================================
-        // FUNCIÓN: CARGAR BANNER FIJO (Ronda 3)
+        // CÓDIGO BANNER FIJO
         // ==========================================
-        function cargarBannerFijo() {
-            if (bannerCargado) return;
-            bannerCargado = true;
-            
-            bannerContainer.innerHTML = '';
-            
+        function cargarBanner(contenedorId, placeholderId) {
+            var contenedor = document.getElementById(contenedorId);
+            contenedor.innerHTML = '';
+
             var configScript = document.createElement('script');
             configScript.type = 'text/javascript';
             configScript.textContent = `
@@ -189,64 +229,83 @@
                     'params' : {}
                 };
             `;
-            bannerContainer.appendChild(configScript);
-            
+            contenedor.appendChild(configScript);
+
             var invokeScript = document.createElement('script');
             invokeScript.type = 'text/javascript';
             invokeScript.src = 'https://www.highperformanceformat.com/5a9a95855c3eee1eddafaafd625faa2e/invoke.js';
             invokeScript.async = true;
-            bannerContainer.appendChild(invokeScript);
-            
-            console.log('📦 Banner fijo cargado en Ronda 3');
+            contenedor.appendChild(invokeScript);
+
+            console.log(`📦 Banner cargado en ${contenedorId}`);
         }
 
         // ==========================================
-        // FUNCIÓN: CAMBIAR RONDA
+        // VARIABLES
+        // ==========================================
+        const DURACION_RONDA = 10;
+        let tiempoTotal = DURACION_RONDA * 3;
+        let rondaActual = 1;
+        let activo = false;
+        let temporizador = null;
+        let rondasIniciadas = false;
+        let inpageCargado = false;
+        let banner2Cargado = false;
+        let banner1Cargado = false;
+
+        const boton = document.getElementById('boton_descarga');
+
+        // ==========================================
+        // CAMBIAR RONDA
         // ==========================================
         function cambiarRonda(ronda) {
             rondaActual = ronda;
             console.log(`📍 Ronda ${ronda} activa`);
-            
-            if (ronda === 2) {
-                cargarSocialBar();
-            } else if (ronda === 3) {
-                cargarBannerFijo();
+
+            if (ronda === 1 && !banner1Cargado) {
+                banner1Cargado = true;
+                cargarBanner('banner1', 'banner1-placeholder');
+            } else if (ronda === 2 && !inpageCargado) {
+                inpageCargado = true;
+                document.getElementById('espacio-inpage').innerHTML = '';
+                cargarInPagePush();
+            } else if (ronda === 3 && !banner2Cargado) {
+                banner2Cargado = true;
+                cargarBanner('banner2', 'banner2-placeholder');
             }
         }
 
         // ==========================================
-        // FUNCIÓN: INICIAR RONDAS AUTOMÁTICAMENTE
+        // INICIAR RONDAS AUTOMÁTICAMENTE
         // ==========================================
         function iniciarRondas() {
             if (rondasIniciadas) return;
             rondasIniciadas = true;
-            
+
             console.log('🚀 Rondas iniciadas automáticamente al cargar la página');
-            
             cambiarRonda(1);
-            
+
             let contadorRonda = DURACION_RONDA;
             let rondaTemp = 1;
-            
+
             temporizador = setInterval(() => {
-                tiempoRestante--;
+                tiempoTotal--;
                 contadorRonda--;
-                
-                // Actualizar el texto del botón si está en modo gris (conteo activo)
+
                 if (activo) {
                     boton.innerHTML = `
-                        ⏳ Espere ${tiempoRestante}s
+                        ⏳ Espere ${tiempoTotal}s
                         <span class="token">Token: PRUEBA-123</span>
                     `;
                 }
-                
+
                 if (contadorRonda <= 0 && rondaTemp < 3) {
                     rondaTemp++;
                     contadorRonda = DURACION_RONDA;
                     cambiarRonda(rondaTemp);
                 }
-                
-                if (tiempoRestante <= 0) {
+
+                if (tiempoTotal <= 0) {
                     clearInterval(temporizador);
                     if (activo) {
                         boton.className = 'btn-verde';
@@ -262,14 +321,14 @@
         }
 
         // ==========================================
-        // FUNCIÓN: INICIAR CONTEO (al presionar el botón)
+        // INICIAR CONTEO (al presionar el botón)
         // ==========================================
         function iniciarConteo() {
             if (activo) return;
-            
+
             boton.className = 'btn-gris';
             boton.innerHTML = `
-                ⏳ Espere ${tiempoRestante}s
+                ⏳ Espere ${tiempoTotal}s
                 <span class="token">Token: PRUEBA-123</span>
             `;
             boton.disabled = true;
@@ -282,11 +341,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
         if (token) {
-            tokenInfo.textContent = 'Token: ' + token;
+            document.getElementById('token-info').textContent = 'Token: ' + token;
         }
 
         // ==========================================
-        // 🚀 INICIAR RONDAS AL CARGAR LA PÁGINA
+        // 🚀 INICIAR RONDAS AL CARGAR
         // ==========================================
         window.addEventListener('load', function() {
             iniciarRondas();

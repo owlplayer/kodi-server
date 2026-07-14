@@ -19,26 +19,6 @@
             justify-content: center; 
             min-height: 100vh;
         }
-        .contenedor-anuncio { 
-            width: 320px; 
-            min-height: 250px; 
-            background-color: #1a1a1a; 
-            margin: 10px 0; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 8px; 
-            border: 1px solid #333; 
-            padding: 10px;
-            overflow: hidden;
-        }
-        .contenedor-anuncio iframe {
-            width: 100%;
-            height: 100%;
-            min-height: 250px;
-            border: none;
-        }
-        .bloque-oculto { display: none !important; }
         
         .btn-verde {
             display: block;
@@ -73,11 +53,6 @@
             word-break: break-all;
         }
         
-        .titulo-prueba {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
         .ronda-label {
             color: #555;
             font-size: 12px;
@@ -87,50 +62,27 @@
 </head>
 <body>
 
-    <h1 style="color: #d4a854; font-size: 22px; margin-bottom: 5px;">🧪 Prueba HilltopAds</h1>
-    <p class="titulo-prueba">Ronda 1: Popunder | Ronda 2: In-Page Push | Ronda 3: Video Slider</p>
-
     <!-- ==========================================
-         CONTENEDOR RONDA 1 (Popunder + Espera)
+         RONDA 1 (Popunder)
          ========================================== -->
-    <div id="ronda1" style="display:block;">
-        <div class="contenedor-anuncio" style="background-color: #2a1a1a; border-color: #553333;">
-            <p style="color: #888; font-size: 13px;">⏳ RONDA 1 (18-13s)<br>Popunder aparecerá al hacer clic en "Desbloquear"</p>
-        </div>
-    </div>
+    <div id="ronda1" style="display:block;"></div>
 
     <!-- ==========================================
-         CONTENEDOR RONDA 2 (In-Page Push)
+         RONDA 2 (In-Page Push)
          ========================================== -->
     <div id="ronda2" style="display:none;">
-        <div class="contenedor-anuncio" style="background-color: #1a2a1a; border-color: #335533;">
-            <div id="anuncio_inpage_ronda2" style="width:100%; min-height:250px;">
-                <!-- Aquí se cargará el In-Page Push -->
-                <p style="color: #666; font-size: 13px; text-align: center; padding: 20px;">
-                    📦 Cargando In-Page Push...<br>
-                    <span style="color:#444;">Ronda 2 (12-7 segundos)</span>
-                </p>
-            </div>
-        </div>
+        <div id="anuncio_inpage_ronda2"></div>
     </div>
 
     <!-- ==========================================
-         CONTENEDOR RONDA 3 (Video Slider)
+         RONDA 3 (Video Slider)
          ========================================== -->
     <div id="ronda3" style="display:none;">
-        <div class="contenedor-anuncio" style="background-color: #1a1a2a; border-color: #333355;">
-            <div id="anuncio_video_ronda3" style="width:100%; min-height:250px;">
-                <!-- Aquí se cargará el Video Slider -->
-                <p style="color: #666; font-size: 13px; text-align: center; padding: 20px;">
-                    🎬 Cargando Video Slider...<br>
-                    <span style="color:#444;">Ronda 3 (6-0 segundos)</span>
-                </p>
-            </div>
-        </div>
+        <div id="anuncio_video_ronda3"></div>
     </div>
 
     <!-- ==========================================
-         RONDA LABELS
+         RONDA LABEL
          ========================================== -->
     <p class="ronda-label" id="label_ronda">Ronda 1 activa</p>
 
@@ -140,7 +92,7 @@
     <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">🔓 Desbloquear</button>
 
     <!-- ==========================================
-         TOKEN INFO (depuración)
+         TOKEN
          ========================================== -->
     <div id="token-info" class="token-info">Token: PRUEBA-123</div>
 
@@ -169,7 +121,7 @@
         if (conteoActivo) return;
         
         // ==========================================
-        // 🔥 POPUNDER (Ronda 1) - CÓDIGO REAL
+        // 🔥 POPUNDER (Ronda 1)
         // ==========================================
         (function(pqj){
         var d = document,
@@ -193,17 +145,15 @@
             segundos--;
             boton.textContent = `⏳ Espere ${segundos} segundos...`;
             
-            // Cambiar rondas
             if (segundos === 12) {
-                cambiarRonda(2);  // In-Page Push
+                cambiarRonda(2);
                 cargarInPagePush();
             }
             if (segundos === 6) {
-                cambiarRonda(3);  // Video Slider
+                cambiarRonda(3);
                 cargarVideoSlider();
             }
             
-            // Finalizar conteo
             if (segundos <= 0) {
                 clearInterval(temporizador);
                 boton.className = 'btn-verde';
@@ -226,21 +176,20 @@
         
         if (ronda === 1) {
             ronda1.style.display = 'block';
-            labelRonda.textContent = 'Ronda 1 activa (Popunder)';
+            labelRonda.textContent = 'Ronda 1: Popunder';
         } else if (ronda === 2) {
             ronda2.style.display = 'block';
-            labelRonda.textContent = 'Ronda 2 activa (In-Page Push)';
+            labelRonda.textContent = 'Ronda 2: In-Page Push';
         } else if (ronda === 3) {
             ronda3.style.display = 'block';
-            labelRonda.textContent = 'Ronda 3 activa (Video Slider)';
+            labelRonda.textContent = 'Ronda 3: Video Slider';
         }
     }
 
     // ==========================================
-    // FUNCIÓN: CARGAR IN-PAGE PUSH (Ronda 2)
+    // FUNCIÓN: CARGAR IN-PAGE PUSH
     // ==========================================
     function cargarInPagePush() {
-        // 🔥 IN-PAGE PUSH - CÓDIGO REAL
         divInPage.innerHTML = '';
         var script = document.createElement('script');
         script.innerHTML = `
@@ -259,10 +208,9 @@
     }
 
     // ==========================================
-    // FUNCIÓN: CARGAR VIDEO SLIDER (Ronda 3)
+    // FUNCIÓN: CARGAR VIDEO SLIDER
     // ==========================================
     function cargarVideoSlider() {
-        // 🔥 VIDEO SLIDER - CÓDIGO REAL
         divVideo.innerHTML = '';
         var script = document.createElement('script');
         script.innerHTML = `
@@ -281,13 +229,11 @@
     }
 
     // ==========================================
-    // INICIALIZACIÓN: Mostrar Ronda 1
+    // INICIALIZAR
     // ==========================================
     cambiarRonda(1);
 
-    // ==========================================
-    // LEER TOKEN DE LA URL (para depuración)
-    // ==========================================
+    // Leer token de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {

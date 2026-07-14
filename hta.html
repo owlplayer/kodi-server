@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="hilltopads-site-verification" content="83b5dfc7d59a4cb128d4" />
+    <title>Prueba HilltopAds</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #111; 
+            color: #fff;
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh;
+        }
+        .contenedor-anuncio { 
+            width: 320px; 
+            min-height: 250px; 
+            background-color: #1a1a1a; 
+            margin: 10px 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+            padding: 10px;
+            overflow: hidden;
+        }
+        .contenedor-anuncio iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 250px;
+            border: none;
+        }
+        .bloque-oculto { display: none !important; }
+        
+        .btn-verde {
+            display: block;
+            width: 300px;
+            background-color: #28a745;
+            color: white;
+            padding: 14px 0;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-verde:hover {
+            background-color: #218838;
+        }
+        .btn-gris {
+            background-color: #6c757d !important;
+            color: #ccc !important;
+            cursor: not-allowed !important;
+        }
+        .btn-gris:hover {
+            background-color: #6c757d !important;
+        }
+        
+        .token-info {
+            color: #666;
+            font-size: 12px;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+        
+        .titulo-prueba {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .ronda-label {
+            color: #555;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="color: #d4a854; font-size: 22px; margin-bottom: 5px;">🧪 Prueba HilltopAds</h1>
+    <p class="titulo-prueba">Ronda 1: Popunder | Ronda 2: In-Page Push | Ronda 3: Video Slider</p>
+
+    <!-- ==========================================
+         CONTENEDOR RONDA 1 (Popunder + Espera)
+         ========================================== -->
+    <div id="ronda1" style="display:block;">
+        <div class="contenedor-anuncio" style="background-color: #2a1a1a; border-color: #553333;">
+            <p style="color: #888; font-size: 13px;">⏳ RONDA 1 (18-13s)<br>Popunder aparecerá al hacer clic en "Desbloquear"</p>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         CONTENEDOR RONDA 2 (In-Page Push)
+         ========================================== -->
+    <div id="ronda2" style="display:none;">
+        <div class="contenedor-anuncio" style="background-color: #1a2a1a; border-color: #335533;">
+            <div id="anuncio_inpage_ronda2" style="width:100%; min-height:250px;">
+                <!-- Aquí se cargará el In-Page Push -->
+                <p style="color: #666; font-size: 13px; text-align: center; padding: 20px;">
+                    📦 Cargando In-Page Push...<br>
+                    <span style="color:#444;">Ronda 2 (12-7 segundos)</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         CONTENEDOR RONDA 3 (Video Slider)
+         ========================================== -->
+    <div id="ronda3" style="display:none;">
+        <div class="contenedor-anuncio" style="background-color: #1a1a2a; border-color: #333355;">
+            <div id="anuncio_video_ronda3" style="width:100%; min-height:250px;">
+                <!-- Aquí se cargará el Video Slider -->
+                <p style="color: #666; font-size: 13px; text-align: center; padding: 20px;">
+                    🎬 Cargando Video Slider...<br>
+                    <span style="color:#444;">Ronda 3 (6-0 segundos)</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         RONDA LABELS
+         ========================================== -->
+    <p class="ronda-label" id="label_ronda">Ronda 1 activa</p>
+
+    <!-- ==========================================
+         BOTÓN
+         ========================================== -->
+    <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">🔓 Desbloquear</button>
+
+    <!-- ==========================================
+         TOKEN INFO (depuración)
+         ========================================== -->
+    <div id="token-info" class="token-info">Token: PRUEBA-123</div>
+
+
+<script>
+    // ==========================================
+    // VARIABLES
+    // ==========================================
+    let segundos = 18;
+    let conteoActivo = false;
+    let rondaActual = 1;
+    const boton = document.getElementById('boton_descarga');
+    const labelRonda = document.getElementById('label_ronda');
+    
+    const ronda1 = document.getElementById('ronda1');
+    const ronda2 = document.getElementById('ronda2');
+    const ronda3 = document.getElementById('ronda3');
+    
+    const divInPage = document.getElementById('anuncio_inpage_ronda2');
+    const divVideo = document.getElementById('anuncio_video_ronda3');
+
+    // ==========================================
+    // FUNCIÓN: INICIAR CONTEO
+    // ==========================================
+    function iniciarConteo() {
+        if (conteoActivo) return;
+        
+        // ==========================================
+        // 🔥 POPUNDER (Ronda 1) - CÓDIGO REAL
+        // ==========================================
+        (function(pqj){
+        var d = document,
+            s = d.createElement('script'),
+            l = d.scripts[d.scripts.length - 1];
+        s.settings = pqj || {};
+        s.src = "\/\/crookedagreement.com\/cID.9N6\/bk2b5AllSuW_Ql9kNtzrIGyjMPDPU\/yJMySA0\/3QMLjQIqwyN\/TPIU1G";
+        s.async = true;
+        s.referrerPolicy = 'no-referrer-when-downgrade';
+        l.parentNode.insertBefore(s, l);
+        })({})
+        
+        // Cambiar botón a gris
+        boton.className = 'btn-gris';
+        boton.textContent = `⏳ Espere ${segundos} segundos...`;
+        boton.disabled = true;
+        conteoActivo = true;
+        
+        // Iniciar conteo
+        const temporizador = setInterval(() => {
+            segundos--;
+            boton.textContent = `⏳ Espere ${segundos} segundos...`;
+            
+            // Cambiar rondas
+            if (segundos === 12) {
+                cambiarRonda(2);  // In-Page Push
+                cargarInPagePush();
+            }
+            if (segundos === 6) {
+                cambiarRonda(3);  // Video Slider
+                cargarVideoSlider();
+            }
+            
+            // Finalizar conteo
+            if (segundos <= 0) {
+                clearInterval(temporizador);
+                boton.className = 'btn-verde';
+                boton.textContent = '✅ Continuar Reproducción';
+                boton.disabled = false;
+                conteoActivo = false;
+            }
+        }, 1000);
+    }
+
+    // ==========================================
+    // FUNCIÓN: CAMBIAR RONDA
+    // ==========================================
+    function cambiarRonda(ronda) {
+        rondaActual = ronda;
+        
+        ronda1.style.display = 'none';
+        ronda2.style.display = 'none';
+        ronda3.style.display = 'none';
+        
+        if (ronda === 1) {
+            ronda1.style.display = 'block';
+            labelRonda.textContent = 'Ronda 1 activa (Popunder)';
+        } else if (ronda === 2) {
+            ronda2.style.display = 'block';
+            labelRonda.textContent = 'Ronda 2 activa (In-Page Push)';
+        } else if (ronda === 3) {
+            ronda3.style.display = 'block';
+            labelRonda.textContent = 'Ronda 3 activa (Video Slider)';
+        }
+    }
+
+    // ==========================================
+    // FUNCIÓN: CARGAR IN-PAGE PUSH (Ronda 2)
+    // ==========================================
+    function cargarInPagePush() {
+        // 🔥 IN-PAGE PUSH - CÓDIGO REAL
+        divInPage.innerHTML = '';
+        var script = document.createElement('script');
+        script.innerHTML = `
+        (function(cdqyl){
+        var d = document,
+            s = d.createElement('script'),
+            l = d.scripts[d.scripts.length - 1];
+        s.settings = cdqyl || {};
+        s.src = "\/\/conventionalresponse.com\/boX\/VQsWd.GXlc0rYzWOcG\/FeGma9CuZZJUZlpk\/PkT\/cHyIMLjfAx1QMVjRkBt-NuzcIkyVMgD\/UozRMxwd";
+        s.async = true;
+        s.referrerPolicy = 'no-referrer-when-downgrade';
+        l.parentNode.insertBefore(s, l);
+        })({})
+        `;
+        divInPage.appendChild(script);
+    }
+
+    // ==========================================
+    // FUNCIÓN: CARGAR VIDEO SLIDER (Ronda 3)
+    // ==========================================
+    function cargarVideoSlider() {
+        // 🔥 VIDEO SLIDER - CÓDIGO REAL
+        divVideo.innerHTML = '';
+        var script = document.createElement('script');
+        script.innerHTML = `
+        (function(cbkw){
+        var d = document,
+            s = d.createElement('script'),
+            l = d.scripts[d.scripts.length - 1];
+        s.settings = cbkw || {};
+        s.src = "\/\/conventionalresponse.com\/bUXoV.sld\/GTlJ0wYfWccm\/SeRmq9ruLZyUXlBksPeT\/cJydM-jMAj1rNADHU\/t-NGztIDy\/MxDXUZ0rOCQ-";
+        s.async = true;
+        s.referrerPolicy = 'no-referrer-when-downgrade';
+        l.parentNode.insertBefore(s, l);
+        })({})
+        `;
+        divVideo.appendChild(script);
+    }
+
+    // ==========================================
+    // INICIALIZACIÓN: Mostrar Ronda 1
+    // ==========================================
+    cambiarRonda(1);
+
+    // ==========================================
+    // LEER TOKEN DE LA URL (para depuración)
+    // ==========================================
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+        document.getElementById('token-info').textContent = 'Token: ' + token;
+    }
+</script>
+
+</body>
+</html>

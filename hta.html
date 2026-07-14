@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="hilltopads-site-verification" content="83b5dfc7d59a4cb128d4" />
-    <title>Prueba HilltopAds</title>
+    <title>Prueba In-Page Push</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -53,38 +53,43 @@
             word-break: break-all;
         }
         
-        .ronda-label {
+        .estado-label {
             color: #555;
             font-size: 12px;
             margin-top: 5px;
+        }
+        
+        #contenedor_inpage {
+            width: 100%;
+            max-width: 400px;
+            min-height: 250px;
+            margin: 10px 0;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            border: 1px solid #333;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
 
     <!-- ==========================================
-         RONDA 1 (Popunder) - Se muestra al cargar
+         CONTENEDOR PARA IN-PAGE PUSH
          ========================================== -->
-    <div id="ronda1" style="display:block;"></div>
-
-    <!-- ==========================================
-         RONDA 2 (In-Page Push)
-         ========================================== -->
-    <div id="ronda2" style="display:none;">
-        <div id="anuncio_inpage_ronda2"></div>
+    <div id="contenedor_inpage">
+        <p style="color: #666; font-size: 13px; text-align: center; padding: 20px;">
+            ⏳ Cargando In-Page Push...<br>
+            <span style="color:#444; font-size: 11px;">Duración: 45 segundos</span>
+        </p>
     </div>
 
     <!-- ==========================================
-         RONDA 3 (Video Slider)
+         ESTADO
          ========================================== -->
-    <div id="ronda3" style="display:none;">
-        <div id="anuncio_video_ronda3"></div>
-    </div>
-
-    <!-- ==========================================
-         RONDA LABEL
-         ========================================== -->
-    <p class="ronda-label" id="label_ronda">Ronda 1 activa</p>
+    <p class="estado-label" id="estado_label">📦 In-Page Push cargado automáticamente</p>
 
     <!-- ==========================================
          BOTÓN
@@ -99,56 +104,9 @@
 
 <script>
     // ==========================================
-    // VARIABLES
+    // 🚀 CARGAR IN-PAGE PUSH AL INICIO
     // ==========================================
-    const DURACION_RONDA = 15; // 15 segundos por ronda
-    let tiempoTotal = DURACION_RONDA * 3; // 45 segundos totales
-    let conteoActivo = false;
-    let rondaActual = 1;
-    let temporizador = null;
-    const boton = document.getElementById('boton_descarga');
-    const labelRonda = document.getElementById('label_ronda');
-    
-    const ronda1 = document.getElementById('ronda1');
-    const ronda2 = document.getElementById('ronda2');
-    const ronda3 = document.getElementById('ronda3');
-    
-    const divInPage = document.getElementById('anuncio_inpage_ronda2');
-    const divVideo = document.getElementById('anuncio_video_ronda3');
-
-    // ==========================================
-    // FUNCIÓN: CAMBIAR RONDA
-    // ==========================================
-    function cambiarRonda(ronda) {
-        rondaActual = ronda;
-        
-        ronda1.style.display = 'none';
-        ronda2.style.display = 'none';
-        ronda3.style.display = 'none';
-        
-        if (ronda === 1) {
-            ronda1.style.display = 'block';
-            labelRonda.textContent = 'Ronda 1: Popunder';
-            // Popunder ya se ejecutó al hacer clic en "Desbloquear"
-        } else if (ronda === 2) {
-            ronda2.style.display = 'block';
-            labelRonda.textContent = 'Ronda 2: In-Page Push';
-            cargarInPagePush();
-        } else if (ronda === 3) {
-            ronda3.style.display = 'block';
-            labelRonda.textContent = 'Ronda 3: Video Slider';
-            cargarVideoSlider();
-        }
-    }
-
-    // ==========================================
-    // FUNCIÓN: CARGAR IN-PAGE PUSH
-    // ==========================================
-    function cargarInPagePush() {
-        divInPage.innerHTML = '';
-        var script = document.createElement('script');
-        script.innerHTML = `
-        (function(cdqyl){
+    (function(cdqyl){
         var d = document,
             s = d.createElement('script'),
             l = d.scripts[d.scripts.length - 1];
@@ -157,96 +115,50 @@
         s.async = true;
         s.referrerPolicy = 'no-referrer-when-downgrade';
         l.parentNode.insertBefore(s, l);
-        })({})
-        `;
-        divInPage.appendChild(script);
-    }
+    })({})
 
     // ==========================================
-    // FUNCIÓN: CARGAR VIDEO SLIDER
+    // VARIABLES
     // ==========================================
-    function cargarVideoSlider() {
-        divVideo.innerHTML = '';
-        var script = document.createElement('script');
-        script.innerHTML = `
-        (function(cbkw){
-        var d = document,
-            s = d.createElement('script'),
-            l = d.scripts[d.scripts.length - 1];
-        s.settings = cbkw || {};
-        s.src = "\/\/conventionalresponse.com\/bUXoV.sld\/GTlJ0wYfWccm\/SeRmq9ruLZyUXlBksPeT\/cJydM-jMAj1rNADHU\/t-NGztIDy\/MxDXUZ0rOCQ-";
-        s.async = true;
-        s.referrerPolicy = 'no-referrer-when-downgrade';
-        l.parentNode.insertBefore(s, l);
-        })({})
-        `;
-        divVideo.appendChild(script);
-    }
+    const DURACION = 45;
+    let tiempoRestante = DURACION;
+    let activo = false;
+    let temporizador = null;
+    const boton = document.getElementById('boton_descarga');
+    const estadoLabel = document.getElementById('estado_label');
 
     // ==========================================
-    // FUNCIÓN: INICIAR CONTEO DESDE EL PRINCIPIO
+    // FUNCIÓN: INICIAR CONTEO
     // ==========================================
     function iniciarConteo() {
-        if (conteoActivo) return;
-        
-        // ==========================================
-        // 🔥 POPUNDER (Ronda 1) - SE EJECUTA AL HACER CLIC
-        // ==========================================
-        (function(pqj){
-        var d = document,
-            s = d.createElement('script'),
-            l = d.scripts[d.scripts.length - 1];
-        s.settings = pqj || {};
-        s.src = "\/\/crookedagreement.com\/cID.9N6\/bk2b5AllSuW_Ql9kNtzrIGyjMPDPU\/yJMySA0\/3QMLjQIqwyN\/TPIU1G";
-        s.async = true;
-        s.referrerPolicy = 'no-referrer-when-downgrade';
-        l.parentNode.insertBefore(s, l);
-        })({})
+        if (activo) return;
         
         // Cambiar botón a gris
         boton.className = 'btn-gris';
-        boton.textContent = `⏳ Espere ${tiempoTotal} segundos...`;
+        boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;
         boton.disabled = true;
-        conteoActivo = true;
+        activo = true;
+        estadoLabel.textContent = '⏳ Conteo regresivo...';
         
-        // Mostrar Ronda 1
-        cambiarRonda(1);
-        
-        // Iniciar el temporizador
-        let tiempoRestante = tiempoTotal;
-        let contadorRonda = DURACION_RONDA;
-        let rondaActualTemp = 1;
-        
+        // Iniciar conteo
         temporizador = setInterval(() => {
             tiempoRestante--;
-            contadorRonda--;
             boton.textContent = `⏳ Espere ${tiempoRestante} segundos...`;
             
-            // Cambiar de ronda cuando se acaba el tiempo
-            if (contadorRonda <= 0 && rondaActualTemp < 3) {
-                rondaActualTemp++;
-                contadorRonda = DURACION_RONDA;
-                cambiarRonda(rondaActualTemp);
-            }
-            
-            // Finalizar
             if (tiempoRestante <= 0) {
                 clearInterval(temporizador);
                 boton.className = 'btn-verde';
                 boton.textContent = '✅ Continuar Reproducción';
                 boton.disabled = false;
-                conteoActivo = false;
-                labelRonda.textContent = '✅ Todas las rondas completadas';
+                activo = false;
+                estadoLabel.textContent = '✅ Prueba completada';
             }
         }, 1000);
     }
 
     // ==========================================
-    // INICIALIZAR: Mostrar Ronda 1 al cargar la página
+    // LEER TOKEN DE LA URL
     // ==========================================
-    cambiarRonda(1);
-
-    // Leer token de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {

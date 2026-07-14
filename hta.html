@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descargas Móviles</title>
+    <title>Prueba Adsterra</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { 
@@ -13,11 +13,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
             font-family: Arial, sans-serif;
+            padding: 10px;
         }
         
-        /* Contenedor principal */
         .contenido {
             flex: 1;
             display: flex;
@@ -31,35 +30,53 @@
         }
         
         /* ==========================================
-           CUADRO BANNER FIJO (Ronda 3) - 50px abajo del borde superior
+           CUADROS DE 300x250 POR RONDA
            ========================================== */
-        .banner-fijo {
+        .ronda {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+            border: 1px dashed #333;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .ronda .label {
+            color: #555;
+            font-size: 11px;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .cuadro {
             width: 300px;
             height: 250px;
             background-color: #1a1a1a;
             border: 1px solid #333;
-            border-radius: 8px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 50px; /* 50px abajo del borde superior */
-            overflow: hidden;
             flex-shrink: 0;
         }
-        .banner-fijo iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .banner-fijo .placeholder {
-            color: #555;
-            font-size: 13px;
+        .cuadro .placeholder {
+            color: #444;
+            font-size: 12px;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
+        }
+        .cuadro .placeholder span {
+            color: #555;
+            font-size: 10px;
+            display: block;
+            margin-top: 4px;
         }
         
         /* ==========================================
-           BOTÓN (50px hacia arriba desde el fondo)
+           BOTÓN (50px hacia arriba)
            ========================================== */
         .btn-verde {
             width: 100%;
@@ -74,22 +91,16 @@
             cursor: pointer;
             border: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
             transform: translateY(-50px);
         }
         .btn-verde:hover {
             background-color: #218838;
-            box-shadow: 0 4px 20px rgba(40, 167, 69, 0.5);
         }
         .btn-gris {
             background-color: #6c757d !important;
             color: #999 !important;
             cursor: not-allowed !important;
-            box-shadow: none !important;
-        }
-        .btn-gris:hover {
-            background-color: #6c757d !important;
-            box-shadow: none !important;
+            transform: translateY(-50px);
         }
         
         .token-info {
@@ -106,27 +117,52 @@
 <body>
 
     <!-- ==========================================
-         BANNER FIJO (Ronda 3) - 50px abajo del borde superior
+         RONDA 1 (0-10s)
          ========================================== -->
-    <div id="banner-container" class="banner-fijo">
-        <div class="placeholder" id="banner-placeholder">
-            ⏳ Banner fijo (Ronda 3)<br>
-            <span style="color:#444;font-size:11px;">Se cargará en la Ronda 3</span>
+    <div id="ronda1" class="ronda">
+        <div class="label">📍 RONDA 1 (0-10s)</div>
+        <div class="cuadro">
+            <div class="placeholder">Cuadro 1A<br><span>Superior</span></div>
+        </div>
+        <div class="cuadro">
+            <div class="placeholder">Cuadro 1B<br><span>Inferior</span></div>
         </div>
     </div>
 
     <!-- ==========================================
-         BOTÓN (50px hacia arriba)
+         RONDA 2 (10-20s)
+         ========================================== -->
+    <div id="ronda2" class="ronda" style="display:none;">
+        <div class="label">📍 RONDA 2 (10-20s)</div>
+        <div class="cuadro">
+            <div class="placeholder">Cuadro 2A<br><span>Superior</span></div>
+        </div>
+        <div class="cuadro">
+            <div class="placeholder">Cuadro 2B<br><span>Inferior</span></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         RONDA 3 (20-30s)
+         ========================================== -->
+    <div id="ronda3" class="ronda" style="display:none;">
+        <div class="label">📍 RONDA 3 (20-30s)</div>
+        <div class="cuadro">
+            <div class="placeholder">Cuadro 3A<br><span>Superior</span></div>
+        </div>
+        <div class="cuadro">
+            <div class="placeholder">Cuadro 3B<br><span>Inferior</span></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         BOTÓN + TOKEN
          ========================================== -->
     <div class="contenido">
         <button id="boton_descarga" class="btn-verde" onclick="iniciarConteo()">Desbloquear</button>
         <div id="token-info" class="token-info">Token: PRUEBA-123</div>
     </div>
 
-    <!-- ==========================================
-         SOCIAL BAR (se carga en Ronda 2)
-         ========================================== -->
-    <div id="social-bar-container"></div>
 
     <script>
         // ==========================================
@@ -137,73 +173,29 @@
         let rondaActual = 1;
         let activo = false;
         let temporizador = null;
-        let socialBarCargada = false;
-        let bannerCargado = false;
-        
         const boton = document.getElementById('boton_descarga');
-        const bannerContainer = document.getElementById('banner-container');
-        const bannerPlaceholder = document.getElementById('banner-placeholder');
-        const socialContainer = document.getElementById('social-bar-container');
 
-        // ==========================================
-        // FUNCIÓN: CARGAR SOCIAL BAR (Ronda 2)
-        // ==========================================
-        function cargarSocialBar() {
-            if (socialBarCargada) return;
-            socialBarCargada = true;
-            
-            var script = document.createElement('script');
-            script.src = 'https://pl30356267.effectivecpmnetwork.com/62/0c/5b/620c5bdb5407c0cb7f17f61490f4edea.js';
-            script.async = true;
-            document.body.appendChild(script);
-            console.log('📦 Social Bar cargada en Ronda 2');
-        }
-
-        // ==========================================
-        // FUNCIÓN: CARGAR BANNER FIJO (Ronda 3)
-        // ==========================================
-        function cargarBannerFijo() {
-            if (bannerCargado) return;
-            bannerCargado = true;
-            
-            // Reemplazar el placeholder con el código del banner
-            bannerContainer.innerHTML = '';
-            
-            // Script de configuración
-            var configScript = document.createElement('script');
-            configScript.type = 'text/javascript';
-            configScript.textContent = `
-                atOptions = {
-                    'key' : '5a9a95855c3eee1eddafaafd625faa2e',
-                    'format' : 'iframe',
-                    'height' : 250,
-                    'width' : 300,
-                    'params' : {}
-                };
-            `;
-            bannerContainer.appendChild(configScript);
-            
-            // Script de invocación
-            var invokeScript = document.createElement('script');
-            invokeScript.type = 'text/javascript';
-            invokeScript.src = 'https://www.highperformanceformat.com/5a9a95855c3eee1eddafaafd625faa2e/invoke.js';
-            invokeScript.async = true;
-            bannerContainer.appendChild(invokeScript);
-            
-            console.log('📦 Banner fijo cargado en Ronda 3');
-        }
+        const ronda1 = document.getElementById('ronda1');
+        const ronda2 = document.getElementById('ronda2');
+        const ronda3 = document.getElementById('ronda3');
 
         // ==========================================
         // FUNCIÓN: CAMBIAR RONDA
         // ==========================================
         function cambiarRonda(ronda) {
-            rondaActual = ronda;
-            console.log(`📍 Ronda ${ronda} activa`);
-            
-            if (ronda === 2) {
-                cargarSocialBar();
+            ronda1.style.display = 'none';
+            ronda2.style.display = 'none';
+            ronda3.style.display = 'none';
+
+            if (ronda === 1) {
+                ronda1.style.display = 'flex';
+                console.log('📍 Ronda 1 activa');
+            } else if (ronda === 2) {
+                ronda2.style.display = 'flex';
+                console.log('📍 Ronda 2 activa');
             } else if (ronda === 3) {
-                cargarBannerFijo();
+                ronda3.style.display = 'flex';
+                console.log('📍 Ronda 3 activa');
             }
         }
 
